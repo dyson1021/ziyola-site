@@ -49,3 +49,15 @@
 - CONTACT の公式メール（現在は @ZIYOLA_official DM 案内）
 - ナビ/フッターの「ZIYOLA」はテキストのまま（ロゴ画像化するか要確認）
 - GOODS のオンラインストアURL
+
+## 取り置きフォーム（LIVE 欄 `#reserve`）
+- 項目: 取り置き名 / 公演日（date）+ 会場名 / 枚数（1〜6）。隠し項目 `website` はスパム避け（入っていたら送らずに成功扱い）。
+- 送信先: `POST /api/reserve`（Vercel Function `api/reserve.js`）→ LINE Messaging API の push で通知。
+  - Vercel 環境変数: `LINE_CHANNEL_ACCESS_TOKEN`（チャネルアクセストークン長期）/ `LINE_TO`（届け先のユーザーID `U…` かグループID `C…`）。未設定なら 503。
+  - LINE Notify は 2025/3 終了のため使わない。無料のコミュニケーションプランは push 月200通まで。
+- 送れなかったとき（claude.ai 版は /api が無いので常にこれ、通信エラー、LINE エラー）は X DM 用の文面＋Copy＋公式Xボタンを出す。
+- 公演が決まって LIVE にカードが増えたら、公演日と会場をセレクトにする余地あり。
+
+## Vercel 公開（未完了）
+- `vercel.json`: build = `node scripts/build.mjs`（index.html に doctype/head を付けて dist/ を作る）、output = dist、`api/` は Functions。
+- GitHub リポジトリ dyson1021/ziyola-site を作ってもらう必要あり（このセッションからは作れない）。作成後に add_repo → push → Vercel プロジェクト作成。

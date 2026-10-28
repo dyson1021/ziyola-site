@@ -109,6 +109,36 @@ h1,h2,h3{margin:0;text-wrap:balance;line-height:1}
 .gig.soldout .btn{border-color:var(--fg-dim);color:var(--fg-dim);pointer-events:none}
 @media(max-width:720px){.gig{grid-template-columns:1fr}.gig .act{white-space:normal}}
 
+/* ticket hold form */
+.reserve{margin-top:40px;border:1px solid var(--line);background:var(--bg-3);padding:28px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.7fr);gap:32px;scroll-margin-top:80px}
+@media(max-width:800px){.reserve{grid-template-columns:minmax(0,1fr);padding:22px}}
+.reserve-head{display:grid;gap:10px;align-content:start}
+.reserve-head h3{font-family:var(--display);font-size:clamp(34px,5vw,52px);letter-spacing:.04em;text-transform:uppercase;line-height:.92}
+.reserve-head p{margin:0;font-size:14px;color:var(--fg-dim)}
+.rform{display:grid;gap:18px;min-width:0}
+.field{display:grid;gap:6px;min-width:0;border:0;margin:0;padding:0}
+.field>label,.field>legend{font-family:var(--util);font-weight:600;letter-spacing:.2em;text-transform:uppercase;font-size:13px;color:var(--fg-dim);padding:0}
+.field .req{color:var(--accent);margin-left:6px}
+.field .help{font-size:12px;color:var(--fg-dim)}
+.rform input,.rform select{font:16px/1.4 var(--body);color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:0;padding:12px 14px;width:100%;min-width:0;-webkit-appearance:none;appearance:none}
+.rform select{background-image:linear-gradient(45deg,transparent 50%,var(--fg-dim) 50%),linear-gradient(135deg,var(--fg-dim) 50%,transparent 50%);background-position:calc(100% - 20px) 55%,calc(100% - 14px) 55%;background-size:6px 6px;background-repeat:no-repeat;padding-right:40px}
+.rform input:focus,.rform select:focus{border-color:var(--accent);outline:none}
+.rform input:focus-visible,.rform select:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.rform input[aria-invalid="true"]{border-color:#ff8a6a}
+.pair{display:grid;grid-template-columns:minmax(0,190px) minmax(0,1fr);gap:10px}
+.pair label{font-size:12px;color:var(--fg-dim);display:grid;gap:4px}
+@media(max-width:520px){.pair{grid-template-columns:minmax(0,1fr)}}
+.count{max-width:160px}
+.hp{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}
+.rform .btn{justify-self:start;cursor:pointer;font-family:var(--util)}
+.rform .btn[disabled]{opacity:.6;cursor:progress}
+.rstatus{font-size:14px;min-height:1px}
+.rstatus:empty{display:none}
+.rstatus.ok{border-left:3px solid var(--accent);padding:10px 14px;background:rgba(255,90,31,.08)}
+.rstatus.err{border-left:3px solid #ff8a6a;padding:10px 14px;background:rgba(255,138,106,.08);display:grid;gap:10px}
+.rstatus pre{margin:0;white-space:pre-wrap;font:14px/1.7 var(--body);background:var(--bg);border:1px solid var(--line);padding:10px 12px;user-select:all}
+.rstatus .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+
 /* disco */
 .disco{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px}
 .rec{display:grid;gap:12px;min-width:0;align-content:start}
@@ -248,6 +278,36 @@ footer small{color:var(--fg-dim);font-family:var(--util);letter-spacing:.1em;fon
         <div class="act"><a class="btn" href="https://x.com/ZIYOLA_official" target="_blank" rel="noopener">Official X</a></div>
       </article>
     </div>
+    <div class="reserve" id="reserve">
+      <div class="reserve-head">
+        <span class="kicker">Ticket</span>
+        <h3>Reserve</h3>
+        <p>チケットの取り置きはこちらから。送信内容はメンバーに届きます。</p>
+      </div>
+      <form class="rform" id="rform" novalidate>
+        <div class="field">
+          <label for="r-name">取り置き名<span class="req">必須</span></label>
+          <input id="r-name" name="name" type="text" maxlength="40" autocomplete="name" required>
+          <span class="help">当日、受付でお伝えいただくお名前です。</span>
+        </div>
+        <fieldset class="field">
+          <legend>公演日と会場名<span class="req">必須</span></legend>
+          <div class="pair">
+            <label for="r-date">公演日<input id="r-date" name="date" type="date" required></label>
+            <label for="r-venue">会場名<input id="r-venue" name="venue" type="text" maxlength="60" placeholder="例：心斎橋 ○○" required></label>
+          </div>
+        </fieldset>
+        <div class="field count">
+          <label for="r-count">枚数<span class="req">必須</span></label>
+          <select id="r-count" name="count" required>
+            <option value="1">1枚</option><option value="2">2枚</option><option value="3">3枚</option><option value="4">4枚</option><option value="5">5枚</option><option value="6">6枚</option>
+          </select>
+        </div>
+        <div class="hp" aria-hidden="true"><label for="r-website">Website</label><input id="r-website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
+        <button class="btn solid" type="submit" id="r-submit">取り置きを申し込む</button>
+        <div class="rstatus" id="rstatus" role="status" aria-live="polite"></div>
+      </form>
+    </div>
   </div>
 </section>
 
@@ -374,7 +434,7 @@ footer small{color:var(--fg-dim);font-family:var(--util);letter-spacing:.1em;fon
       </div>
       <div class="box">
         <h3>Ticket</h3>
-        <p>ライブのチケット取り置きは各メンバーのX DMまたは公式Xまで。公演日と枚数を記載してください。</p>
+        <p>ライブのチケット取り置きは <a href="#reserve">LIVE 欄の取り置きフォーム</a> から。フォームが使えない場合は、各メンバーのX DMまたは公式Xまで公演日と枚数を記載してください。</p>
         <div class="mail"><span id="mail2">@ZIYOLA_official</span><button class="copy" type="button" data-copy="mail2">Copy</button></div>
       </div>
     </div>
@@ -410,6 +470,48 @@ footer small{color:var(--fg-dim);font-family:var(--util);letter-spacing:.1em;fon
       try{navigator.clipboard.writeText(t).then(done,sel)}catch(e){sel()}
     });
   });
+  /* ---------- ticket hold form → /api/reserve (Vercel function → LINE) ---------- */
+  (function(){
+    var form=document.getElementById('rform');if(!form)return;
+    var st=document.getElementById('rstatus'),btn=document.getElementById('r-submit'),dateEl=document.getElementById('r-date');
+    var d=new Date();dateEl.min=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+    var WD=['日','月','火','水','木','金','土'];
+    function fmt(v){var p=v.split('-');var w=new Date(+p[0],p[1]-1,+p[2]).getDay();return p.join('.')+'（'+WD[w]+'）'}
+    function el(tag,cls,text){var e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e}
+    function show(kind,nodes){st.className='rstatus '+kind;st.textContent='';nodes.forEach(function(n){st.appendChild(typeof n==='string'?el('p',null,n):n)});st.querySelectorAll('p').forEach(function(p){p.style.margin='0'})}
+    form.addEventListener('input',function(e){if(e.target.getAttribute('aria-invalid')==='true'&&e.target.checkValidity())e.target.removeAttribute('aria-invalid')});
+    form.addEventListener('submit',function(e){
+      e.preventDefault();
+      var bad=null;
+      ['r-name','r-date','r-venue','r-count'].forEach(function(id){var f=document.getElementById(id);if(f.tagName==='INPUT'&&f.type==='text')f.value=f.value.trim();var ok=f.value!==''&&f.checkValidity();if(!ok){f.setAttribute('aria-invalid','true');bad=bad||f}else f.removeAttribute('aria-invalid')});
+      if(bad){show('err',['未入力の項目があります。赤枠の項目を確認してください。']);bad.focus();return}
+      var v=function(id){return document.getElementById(id).value};
+      var data={name:v('r-name'),date:v('r-date'),venue:v('r-venue'),count:+v('r-count'),website:v('r-website')};
+      var text='【取り置き】\n取り置き名：'+data.name+'\n公演日：'+fmt(data.date)+'\n会場：'+data.venue+'\n枚数：'+data.count+'枚';
+      btn.disabled=true;btn.textContent='送信中…';
+      fetch('/api/reserve',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)})
+        .then(function(r){return r.json().catch(function(){return {}}).then(function(j){return {status:r.status,j:j}})})
+        .then(function(r){
+          if(r.status===200&&r.j.ok){
+            show('ok',['取り置きを送信しました。','当日は受付で「'+data.name+'」とお伝えください。（'+fmt(data.date)+' '+data.venue+' / '+data.count+'枚）']);
+            form.reset();
+          }else if(r.status===400&&r.j.error){show('err',[r.j.error])}
+          else fallback(text);
+        },function(){fallback(text)})
+        .then(function(){btn.disabled=false;btn.textContent='取り置きを申し込む'});
+    });
+    function fallback(text){
+      var pre=el('pre',null,text),row=el('div','row'),cp=el('button','copy','Copy'),x=el('a','btn','公式Xを開く');
+      cp.type='button';x.href='https://x.com/ZIYOLA_official';x.target='_blank';x.rel='noopener';
+      cp.addEventListener('click',function(){
+        var sel=function(){var r=document.createRange();r.selectNodeContents(pre);var s=getSelection();s.removeAllRanges();s.addRange(r)};
+        try{navigator.clipboard.writeText(text).then(function(){cp.textContent='Copied';setTimeout(function(){cp.textContent='Copy'},1500)},sel)}catch(err){sel()}
+      });
+      row.appendChild(cp);row.appendChild(x);
+      show('err',['送信できませんでした。お手数ですが、下の文面を公式XのDMに送ってください。',pre,row]);
+    }
+  })();
+
   if(reduce)return;
 
   /* ---------- scroll reveal (runs with or without WebGL) ---------- */
