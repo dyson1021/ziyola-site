@@ -51,12 +51,15 @@
 - GOODS のオンラインストアURL
 
 ## 取り置きフォーム（LIVE 欄 `#reserve`）
-- 項目: 取り置き名 / 公演日（date）+ 会場名 / 枚数（1〜6）。過去日は選べない。
-- 届け先は **公式X @ZIYOLA_official の DM**（2026.10 ユーザー指示。LINE 案は取りやめ、api/ は削除済み）。
-  - 送信はファン自身の X アカウントから。フォームは文面を作るだけで、サーバー処理なし（claude.ai 版でも動く）。
-  - X API での自動送信は有料プランが要るので使わない。
-  - `var X_DM_ID` に @ZIYOLA_official の数字のユーザーIDを入れると、ボタンが `x.com/messages/compose?recipient_id=…&text=…`（宛先・文面入りのDM画面）になる。空なら「Copy して公式Xのプロフィールから送る」案内。**現在は空（ID 待ち）**。
-  - DM を「すべてのアカウントから受け取る」設定にしていないと、フォロー外のファンは送れない。
+- 項目: 取り置き名 / 公演日（date）+ 会場名 / 枚数（1〜6）。過去日は選べない。隠し項目 `website` はスパム避け。
+- 届け先は **Google スプレッドシート**（2026.10 ユーザー指示。LINE 案→X DM 案を経てこれに決定）。
+  - 仕組み: フォーム → Apps Script ウェブアプリ（`gas/Code.gs`）→ シート「取り置き」に1行追加（受付日時 / 公演日 / 会場 / 取り置き名 / 枚数）。
+  - index.html の `var SHEET_URL` にウェブアプリの URL（…/exec）を入れる。**現在は空（ユーザーのデプロイ待ち）**。
+  - POST は `Content-Type: text/plain` の JSON（Apps Script はプリフライトに応答しないため）。返り値 `{ok:true}` / `{ok:false,error:"日本語メッセージ"|"busy"|"server"}`。
+  - Code.gs 側で入力チェック、`= + - @` 始まりは `'` を付けて数式化を防止、1分20件まで、LockService で同時書き込みを直列化。
+  - コードを直したら Apps Script で「デプロイを管理 → 編集 → 新バージョン」（URL は変わらない）。
+- 送れなかったとき（SHEET_URL 未設定、claude.ai 版は外部送信不可なので常に、通信エラー、busy/server）は X DM 用の文面＋Copy＋公式Xボタン。
+  - `var X_DM_ID` に @ZIYOLA_official の数字のユーザーIDを入れると、宛先・文面入りの DM 画面を開くボタンになる（現在は空）。
 - 公演が決まって LIVE にカードが増えたら、公演日と会場をセレクトにする余地あり。
 
 ## Vercel 公開（未完了）

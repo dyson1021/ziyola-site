@@ -283,7 +283,7 @@ footer small{color:var(--fg-dim);font-family:var(--util);letter-spacing:.1em;fon
       <div class="reserve-head">
         <span class="kicker">Ticket</span>
         <h3>Reserve</h3>
-        <p>入力した内容で、公式X（@ZIYOLA_official）へのDMを作ります。Xにログインした状態でご利用ください。</p>
+        <p>チケットの取り置きはこちらから。送信すると受付完了です。</p>
       </div>
       <form class="rform" id="rform" novalidate>
         <div class="field">
@@ -305,7 +305,7 @@ footer small{color:var(--fg-dim);font-family:var(--util);letter-spacing:.1em;fon
           </select>
         </div>
         <div class="hp" aria-hidden="true"><label for="r-website">Website</label><input id="r-website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
-        <button class="btn solid" type="submit" id="r-submit">DMの文面を作る</button>
+        <button class="btn solid" type="submit" id="r-submit">取り置きを申し込む</button>
         <div class="rstatus" id="rstatus" role="status" aria-live="polite"></div>
       </form>
     </div>
@@ -435,7 +435,7 @@ footer small{color:var(--fg-dim);font-family:var(--util);letter-spacing:.1em;fon
       </div>
       <div class="box">
         <h3>Ticket</h3>
-        <p>ライブのチケット取り置きは <a href="#reserve">LIVE 欄の取り置きフォーム</a> で文面を作り、公式XのDMで送ってください。各メンバーのX DMでも受け付けます。</p>
+        <p>ライブのチケット取り置きは <a href="#reserve">LIVE 欄の取り置きフォーム</a> から。各メンバーのX DMや公式XのDMでも受け付けます。</p>
         <div class="mail"><span id="mail2">@ZIYOLA_official</span><button class="copy" type="button" data-copy="mail2">Copy</button></div>
       </div>
     </div>
@@ -471,13 +471,14 @@ footer small{color:var(--fg-dim);font-family:var(--util);letter-spacing:.1em;fon
       try{navigator.clipboard.writeText(t).then(done,sel)}catch(e){sel()}
     });
   });
-  /* ---------- ticket hold form → prefilled X DM to @ZIYOLA_official ---------- */
-  // Numeric user ID of @ZIYOLA_official. When set, the button opens a DM with the text already filled in;
-  // when empty, the visitor copies the text and sends it from the profile's message button.
+  /* ---------- ticket hold form → Google Sheets (Apps Script web app, see gas/Code.gs) ---------- */
+  // SHEET_URL: the Apps Script web app URL (…/exec). Empty, or when sending fails, the visitor gets an X DM text instead.
+  // X_DM_ID: numeric user ID of @ZIYOLA_official; when set, that fallback opens a DM with the text filled in.
+  var SHEET_URL='';
   var X_DM_ID='';
   (function(){
     var form=document.getElementById('rform');if(!form)return;
-    var st=document.getElementById('rstatus'),dateEl=document.getElementById('r-date');
+    var st=document.getElementById('rstatus'),btn=document.getElementById('r-submit'),dateEl=document.getElementById('r-date');
     var d=new Date();dateEl.min=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
     var WD=['日','月','火','水','木','金','土'];
     function fmt(v){var p=v.split('-');var w=new Date(+p[0],p[1]-1,+p[2]).getDay();return p.join('.')+'（'+WD[w]+'）'}
@@ -486,11 +487,27 @@ footer small{color:var(--fg-dim);font-family:var(--util);letter-spacing:.1em;fon
     form.addEventListener('input',function(e){if(e.target.getAttribute('aria-invalid')==='true'&&e.target.value!==''&&e.target.checkValidity())e.target.removeAttribute('aria-invalid')});
     form.addEventListener('submit',function(e){
       e.preventDefault();
+      if(btn.disabled)return;
       var bad=null;
       ['r-name','r-date','r-venue','r-count'].forEach(function(id){var f=document.getElementById(id);if(f.tagName==='INPUT'&&f.type==='text')f.value=f.value.trim();var ok=f.value!==''&&f.checkValidity();if(!ok){f.setAttribute('aria-invalid','true');bad=bad||f}else f.removeAttribute('aria-invalid')});
       if(bad){show('err',['未入力の項目があります。赤枠の項目を確認してください。']);bad.focus();return}
       var v=function(id){return document.getElementById(id).value};
-      var text='【取り置き】\n取り置き名：'+v('r-name')+'\n公演日：'+fmt(v('r-date'))+'\n会場：'+v('r-venue')+'\n枚数：'+v('r-count')+'枚';
+      var data={name:v('r-name'),date:v('r-date'),venue:v('r-venue'),count:+v('r-count'),website:v('r-website')};
+      var summary=fmt(data.date)+' '+data.venue+' / '+data.count+'枚';
+      var text='【取り置き】\n取り置き名：'+data.name+'\n公演日：'+fmt(data.date)+'\n会場：'+data.venue+'\n枚数：'+data.count+'枚';
+      if(!SHEET_URL)return fallback(text);
+      btn.disabled=true;btn.textContent='送信中…';
+      // text/plain keeps this a simple request (no CORS preflight), which Apps Script requires
+      fetch(SHEET_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(data)})
+        .then(function(r){return r.json()})
+        .then(function(j){
+          if(j&&j.ok){show('ok',['取り置きを受け付けました。','当日は受付で「'+data.name+'」とお伝えください。（'+summary+'）']);form.reset()}
+          else if(j&&j.error&&j.error!=='busy'&&j.error!=='server')show('err',[j.error]);
+          else fallback(text);
+        },function(){fallback(text)})
+        .then(function(){btn.disabled=false;btn.textContent='取り置きを申し込む'});
+    });
+    function fallback(text){
       var pre=el('pre',null,text),row=el('div','row'),cp=el('button','copy','Copy'),x=el('a','btn solid',X_DM_ID?'XのDMを開いて送信':'公式Xを開く');
       cp.type='button';x.target='_blank';x.rel='noopener';
       x.href=X_DM_ID?'https://x.com/messages/compose?recipient_id='+X_DM_ID+'&text='+encodeURIComponent(text):'https://x.com/ZIYOLA_official';
@@ -499,9 +516,9 @@ footer small{color:var(--fg-dim);font-family:var(--util);letter-spacing:.1em;fon
         try{navigator.clipboard.writeText(text).then(function(){cp.textContent='Copied';setTimeout(function(){cp.textContent='Copy'},1500)},sel)}catch(err){sel()}
       });
       row.appendChild(x);row.appendChild(cp);
-      show('ok',[X_DM_ID?'まだ送信されていません。下のボタンでXのDMを開き、そのまま送信してください。':'まだ送信されていません。文面をコピーし、公式Xのプロフィールのメッセージボタンから送信してください。',pre,row,el('p','note','取り置きはDMの送信をもって受付となります。当日は受付で「'+v('r-name')+'」とお伝えください。')]);
+      show('err',[X_DM_ID?'送信できませんでした。お手数ですが、下のボタンでXのDMを開いて送信してください。':'送信できませんでした。お手数ですが、文面をコピーして公式XのDMで送ってください。',pre,row]);
       x.focus();
-    });
+    }
   })();
 
   if(reduce)return;
