@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>ZIYOLA HERO B — 月海</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@400;600;700&family=Noto+Sans+JP:wght@400;500;700;900&display=swap">
+<style>
+/* Plan B「月海 TSUKIUMI」: the photo lies under a night sea. Pointer = ripples, a moon glade shimmers, and the logo surfaces from the deep as you scroll. */
+:root{
+  --bg:#0b0a09;--bg-2:#141210;--bg-3:#1d1a17;--fg:#efe9df;--fg-dim:#9d948a;--line:#2c2823;--accent:#ff5a1f;--steel:#8aa0ad;
+  --display:'Anton','Impact','Arial Narrow Bold',sans-serif;
+  --body:'Noto Sans JP','Hiragino Sans','Yu Gothic',sans-serif;
+  --util:'Barlow Condensed','Arial Narrow',sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.8;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+a{color:inherit}
+img{max-width:100%;display:block}
+h1,h2,h3{margin:0;text-wrap:balance;line-height:1}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:rgba(11,10,9,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:12px}
+.brand{font-family:var(--display);font-size:26px;letter-spacing:.08em;text-decoration:none;color:var(--fg)}
+.brand span{color:var(--accent)}
+.menu{display:flex;gap:22px;list-style:none;margin:0;padding:0;font-family:var(--util);font-weight:600;font-size:15px;letter-spacing:.16em;text-transform:uppercase}
+.menu a{text-decoration:none;color:var(--fg-dim)}
+@media(max-width:720px){.menu{display:none}}
+
+.hero{position:relative;border-bottom:1px solid var(--line);background:var(--bg);height:190vh}
+.hero .stage{position:sticky;top:0;height:100vh;overflow:hidden;background:url("assets/hero.jpg") center 38%/cover no-repeat;touch-action:pan-y;cursor:default;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
+.hero canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.hero .wrap{position:absolute;left:0;right:0;bottom:0;display:grid;gap:18px;padding-bottom:56px;opacity:0;transform:translateY(40px);justify-items:center;text-align:center}
+.kicker{font-family:var(--util);font-weight:600;letter-spacing:.3em;text-transform:uppercase;color:var(--accent);font-size:14px}
+.hero h1.logo{width:100%;display:flex;justify-content:center;line-height:0}
+.hero h1.logo img{width:min(60%,440px);height:auto;margin:0 auto}
+.gl .hero h1.logo img{opacity:0}
+.hero .sub{display:grid;gap:10px;max-width:46ch}
+.hero .sub p{margin:0;font-size:16px;color:var(--fg);text-shadow:0 1px 12px rgba(0,0,0,.8)}
+.hero .tag{font-family:var(--util);letter-spacing:.22em;text-transform:uppercase;color:var(--fg-dim);font-size:13px}
+.cta{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.btn{font-family:var(--util);font-weight:700;letter-spacing:.2em;text-transform:uppercase;font-size:15px;padding:14px 26px;text-decoration:none;border:2px solid var(--accent);color:var(--fg);background:transparent;transition:background .2s,color .2s}
+.btn.solid{background:var(--accent);color:#0b0a09}
+.btn:hover{background:var(--accent);color:#0b0a09}
+.hint{position:absolute;left:0;right:0;bottom:calc(max(24px,env(safe-area-inset-bottom,0px)) + 72px);text-align:center;font-family:var(--util);letter-spacing:.3em;text-transform:uppercase;font-size:12px;color:var(--fg);text-shadow:0 1px 8px rgba(0,0,0,.8);pointer-events:none;display:grid;gap:4px}
+.hint b{font-weight:700;color:var(--accent)}
+.marquee{border-bottom:1px solid var(--line);background:var(--accent);color:#0b0a09;overflow:hidden;white-space:nowrap;font-family:var(--display);font-size:22px;letter-spacing:.14em;text-transform:uppercase;padding-block:8px}
+.marquee div{display:inline-block;animation:slide 28s linear infinite;padding-left:100%}
+@keyframes slide{to{transform:translateX(-100%)}}
+.after{padding-block:72px;min-height:60vh}
+.after h2{font-family:var(--display);font-size:clamp(44px,8vw,88px);letter-spacing:.04em;text-transform:uppercase;line-height:.9;margin-bottom:24px}
+.after p{color:var(--fg-dim);max-width:60ch;margin:0}
+.switch{white-space:nowrap;position:fixed;right:max(12px,env(safe-area-inset-right,0px));bottom:max(12px,env(safe-area-inset-bottom,0px));z-index:20;display:flex;gap:2px;font:600 12px var(--util);letter-spacing:.16em;text-transform:uppercase;background:rgba(11,10,9,.9);border:1px solid var(--line);padding:3px}
+.switch a{text-decoration:none;color:var(--fg-dim);padding:7px 10px}
+.switch a[aria-current]{color:#0b0a09;background:var(--accent)}
+@media(max-width:720px){.switch{top:calc(env(safe-area-inset-top,0px) + 13px);bottom:auto;font-size:11px;letter-spacing:.08em}.switch a{padding:6px 7px}}
+@media(prefers-reduced-motion:reduce){.hero{height:auto}.hero .stage{position:relative;height:auto;min-height:100vh}.hero .wrap{opacity:1!important;transform:none!important;background:linear-gradient(180deg,transparent,rgba(11,10,9,.85) 40%)}.gl .hero h1.logo img{opacity:1}.hint,.hero canvas{display:none}.marquee div{animation:none;padding-left:0}}
+</style>
+</head>
+<body>
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top">ZIYO<span>LA</span></a>
+    <ul class="menu"><li><a href="#news">News</a></li><li><a href="#news">Live</a></li><li><a href="#news">Discography</a></li><li><a href="#news">Member</a></li><li><a href="#news">Video</a></li><li><a href="#news">Contact</a></li></ul>
+  </div>
+</header>
+
+<section class="hero" id="top">
+  <div class="stage" id="stage">
+    <canvas id="gl" aria-hidden="true"></canvas>
+    <div class="wrap" id="wrap">
+      <div class="kicker">Loud Rock Band / Osaka, Japan / 新体制準備中</div>
+      <h1 class="logo"><img id="logo" src="assets/logo.png" alt="ZIYOLA"></h1>
+      <div class="sub">
+        <p>大阪発ラウドロックバンド ZIYOLA（ジオラ）オフィシャルサイト。Vo.MAHO を迎えた新体制で始動。</p>
+        <div class="tag">Vo.MAHO / Gt.将 / Ba.Bucchi — since 2022</div>
+      </div>
+      <div class="cta">
+        <a class="btn solid" href="https://www.youtube.com/watch?v=EoWnbLm7fxk" target="_blank" rel="noopener">Watch「RE:bellion」</a>
+        <a class="btn" href="#news">Listen</a>
+      </div>
+    </div>
+    <div class="hint" id="hint"><span><b>Touch</b> the water</span><span>Scroll</span></div>
+  </div>
+</section>
+<div class="marquee" aria-hidden="true"><div>NEW VOCAL MAHO JOINED &nbsp;///&nbsp; 3rd SINGLE「RE:bellion」NOW STREAMING &nbsp;///&nbsp; NEW VOCAL MAHO JOINED &nbsp;///&nbsp; 3rd SINGLE「RE:bellion」NOW STREAMING &nbsp;///&nbsp;</div></div>
+<section class="after" id="news"><div class="wrap"><h2>News</h2><p>（ここから下は本番サイトと同じ構成。デモではヒーローだけを差し替えています）</p></div></section>
+
+<nav class="switch" aria-label="案の切り替え"><a href="index.html">3案</a><a href="resonance.html">A 共鳴</a><a href="tsukiumi.html" aria-current="page">B 月海</a><a href="rebellion.html">C RE:bellion</a></nav>
+
+<script>
+(function(){
+  var stage=document.getElementById('stage'),hero=stage.parentNode,wrap=document.getElementById('wrap'),hint=document.getElementById('hint'),logoEl=document.getElementById('logo'),cv=document.getElementById('gl');
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+
+  var gl=cv.getContext('webgl',{antialias:false,premultipliedAlpha:false});
+  if(!gl)return fallback();
+  var VS='attribute vec2 a;void main(){gl_Position=vec4(a,0.,1.);}';
+  var FS=[
+  'precision highp float;',
+  'uniform vec2 uRes;uniform float uTime,uProg,uEmerge,uDpr,uGlade;uniform vec4 uCover,uLogo;uniform sampler2D uPhoto,uLogoT;uniform vec4 uDrops[16];',
+  'const vec3 DEEP=vec3(.016,.027,.05);const vec3 MOON=vec3(.78,.86,1.);',
+  'float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}',
+  'vec3 ph(vec2 p){return texture2D(uPhoto,clamp((p-uCover.xy)/uCover.zw,0.,1.)).rgb;}',
+  'float lg(vec2 p){vec2 u=(p-uLogo.xy)/uLogo.zw;if(u.x<0.||u.y<0.||u.x>1.||u.y>1.)return 0.;return texture2D(uLogoT,u).a;}',
+  'void main(){',
+  ' vec2 p=vec2(gl_FragCoord.x,uRes.y-gl_FragCoord.y);float m=min(uRes.x,uRes.y);float y=p.y/uRes.y;float t=uTime;',
+  // ambient swell: stronger toward the bottom, like a surface seen in perspective
+  ' vec2 n=p/m;',
+  ' vec2 sw=vec2(sin(n.y*9.+t*.9)+.5*sin(n.y*23.-t*1.3+n.x*4.),cos(n.x*7.+t*.7)+.5*sin((n.x+n.y)*17.+t*1.1));',
+  ' vec2 off=sw*m*.0055*(.3+y);',
+  ' float h=0.;vec2 ro=vec2(0.);',
+  ' for(int i=0;i<16;i++){vec4 d=uDrops[i];float age=t-d.z;if(d.w<=0.||age<0.||age>4.)continue;',
+  '  vec2 v=p-d.xy;float dist=length(v);vec2 dir=v/max(dist,1.);float rad=age*m*.3;',
+  '  float k=6.2832/(m*.05);float x=dist-rad;',
+  '  float env=(x>0.?exp(-x*x/(m*m*.0004)):exp(x/(m*.07)))*exp(-age*1.3)*d.w;',
+  '  float s=sin(x*k);h+=s*env;ro+=dir*cos(x*k)*env;}',
+  ' off+=ro*m*.0065;',
+  ' vec3 col=ph(p+off);',
+  ' col=mix(col,col*vec3(.78,.9,1.12),.35);',
+  // caustics
+  ' vec2 cq=n*vec2(1.,1.6)+sw*.08;',
+  ' float ca=pow(abs(sin(cq.x*13.+sw.y*1.5+t*.5)*sin(cq.y*11.-t*.4+cq.x*3.+sw.x*1.5)),5.);',
+  ' col+=MOON*ca*.06*smoothstep(.3,1.,y);',
+  // moon glade
+  ' float gx=uGlade+sw.x*m*.03;float gw=m*(.04+.16*y);',
+  ' float band=exp(-pow((p.x-gx)/gw,2.));',
+  ' float sp=pow(max(0.,sin(n.y*190.+sw.x*9.+t*1.8)*sin(n.x*9.+n.y*30.+sw.y*4.-t*.6)),14.);',
+  ' col+=MOON*band*(sp*1.6+.05)*smoothstep(.45,1.,y)*(1.-uProg*.4);',
+  ' float sl=dot(ro,vec2(.35,-1.));col+=MOON*max(sl,0.)*max(sl,0.)*.3;col*=1.-max(-sl,0.)*.25;',
+  // darkness rises
+  ' float dA=mix(.25,.8,smoothstep(0.,.7,y));dA=mix(dA,1.,smoothstep(.75,1.,y));',
+  ' col=mix(col,DEEP,dA*uProg*.93);',
+  // the logo, submerged -> surfaced
+  ' float A=1.-uEmerge;',
+  ' vec2 lp=p+off*(1.+A*7.)+vec2(sin(n.y*38.+t*2.1),cos(n.x*31.+t*1.7))*m*.012*A;',
+  ' float r=m*.014*A;float la=lg(lp)*.36+(lg(lp+vec2(r,0.))+lg(lp-vec2(r,0.))+lg(lp+vec2(0.,r))+lg(lp-vec2(0.,r)))*.16;',
+  ' vec3 lc=mix(vec3(.2,.38,.62),vec3(.97,.96,.94),smoothstep(.55,1.,uEmerge));',
+  ' float lv=la*smoothstep(0.,.35,uEmerge)*mix(.55,1.,uEmerge);',
+  ' float gl2=0.;for(int j=0;j<8;j++){float an=float(j)*.785;gl2+=lg(lp+vec2(cos(an),sin(an))*m*.03);}',
+  ' col+=MOON*gl2/8.*.28*smoothstep(.6,1.,uEmerge);',
+  ' col=mix(col,lc,lv);',
+  ' col+=(hash(floor(p/(2.*uDpr))+fract(t*5.)*73.)-.5)*.04;',
+  ' vec2 vg=(p-uRes*.5)/uRes;col*=1.-.6*dot(vg,vg);',
+  ' gl_FragColor=vec4(col,1.);}'
+  ].join('\n');
+  function sh(t,s){var o=gl.createShader(t);gl.shaderSource(o,s);gl.compileShader(o);if(!gl.getShaderParameter(o,gl.COMPILE_STATUS))throw gl.getShaderInfoLog(o);return o}
+  var pr;
+  try{pr=gl.createProgram();gl.attachShader(pr,sh(gl.VERTEX_SHADER,VS));gl.attachShader(pr,sh(gl.FRAGMENT_SHADER,FS));gl.linkProgram(pr);if(!gl.getProgramParameter(pr,gl.LINK_STATUS))throw 'link'}catch(e){console.error(e);return fallback()}
+  gl.useProgram(pr);
+  var buf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buf);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW);
+  var aLoc=gl.getAttribLocation(pr,'a');gl.enableVertexAttribArray(aLoc);gl.vertexAttribPointer(aLoc,2,gl.FLOAT,false,0,0);
+  var U={};['uRes','uTime','uProg','uEmerge','uDpr','uGlade','uCover','uLogo','uPhoto','uLogoT','uDrops'].forEach(function(n){U[n]=gl.getUniformLocation(pr,n)});
+  function tex(unit,img){var t=gl.createTexture();gl.activeTexture(gl.TEXTURE0+unit);gl.bindTexture(gl.TEXTURE_2D,t);
+    gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
+    gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,img);}
+  function load(src){return new Promise(function(res,rej){var i=new Image();i.onload=function(){res(i)};i.onerror=rej;i.src=src})}
+  var photo,dpr=1,W=0,H=0;
+  Promise.all([load('assets/hero.jpg'),load('assets/logo.png')]).then(function(r){
+    try{tex(0,r[0]);tex(1,r[1])}catch(e){return fallback()}
+    photo=r[0];
+    gl.uniform1i(U.uPhoto,0);gl.uniform1i(U.uLogoT,1);
+    document.documentElement.classList.add('gl');
+    resize();loop();
+  },fallback);
+  function fallback(){document.documentElement.classList.remove('gl');cv.style.display='none'}
+  function resize(){
+    dpr=Math.min(devicePixelRatio||1,innerWidth<720?1.5:2);
+    W=Math.round(stage.clientWidth*dpr);H=Math.round(stage.clientHeight*dpr);
+    cv.width=W;cv.height=H;gl.viewport(0,0,W,H);
+  }
+  addEventListener('resize',resize);
+
+  /* ---------- drops ---------- */
+  var drops=new Float32Array(64),di=0,t0=performance.now();
+  function now(){return (performance.now()-t0)/1000}
+  function drop(x,y,amp){drops.set([x*dpr,y*dpr,now(),amp],di*4);di=(di+1)%16}
+  var last={x:-999,y:-999,t:0},glTarget=.5,glX=.5;
+  function local(e){var r=stage.getBoundingClientRect();return {x:e.clientX-r.left,y:e.clientY-r.top,w:r.width}}
+  stage.addEventListener('pointerdown',function(e){if(e.target.closest('a,button'))return;var q=local(e);drop(q.x,q.y,1.3);last={x:q.x,y:q.y,t:performance.now()}});
+  stage.addEventListener('pointermove',function(e){
+    var q=local(e);glTarget=q.x/q.w;
+    var d=Math.hypot(q.x-last.x,q.y-last.y),tm=performance.now();
+    if(d>28&&tm-last.t>70){drop(q.x,q.y,e.pointerType==='touch'?.7:.45);last={x:q.x,y:q.y,t:tm}}
+  });
+  stage.addEventListener('pointerleave',function(){glTarget=.5});
+
+  /* ---------- loop ---------- */
+  var visible=true,running=false,surfaced=false,nextRain=1.2;
+  function loop(){if(!running&&photo){running=true;requestAnimationFrame(frame)}}
+  new IntersectionObserver(function(es){visible=es[0].isIntersecting;if(visible)loop()}).observe(hero);
+  function frame(){
+    if(!visible){running=false;return}
+    var y=scrollY,vh=innerHeight,range=Math.max(1,hero.offsetHeight-vh);
+    var t=Math.min(1,Math.max(0,y/(range*.75)));var e=t*t*(3-2*t);
+    // copy follows the scroll; the logo surfaces a little later than the copy
+    var em=Math.min(1,Math.max(0,(t-.05)/.8));em=em*em*(3-2*em);
+    wrap.style.opacity=e;wrap.style.transform='translateY('+(40*(1-e))+'px)';
+    hint.style.opacity=1-Math.min(1,y/(vh*.25));
+    var sr=stage.getBoundingClientRect(),lr=logoEl.getBoundingClientRect(),tt=now();
+    var lx=lr.left-sr.left+lr.width/2,ly=lr.top-sr.top+lr.height/2;
+    if(em>.92&&!surfaced){surfaced=true;drop(lx,ly,2);drop(lx-lr.width*.3,ly+10,.9);drop(lx+lr.width*.32,ly-6,.9)}
+    if(em<.5)surfaced=false;
+    // a drop falls on the moon sea now and then
+    if(tt>nextRain){nextRain=tt+1+Math.random()*1.4;drop(sr.width*(.15+Math.random()*.7),sr.height*(.35+Math.random()*.6),.3+Math.random()*.3)}
+    glX+=(glTarget-glX)*.03;
+    gl.uniform2f(U.uRes,W,H);gl.uniform1f(U.uTime,tt);gl.uniform1f(U.uProg,e);gl.uniform1f(U.uEmerge,em);gl.uniform1f(U.uDpr,dpr);gl.uniform1f(U.uGlade,glX*W);
+    var s=Math.max(W/photo.width,H/photo.height),dw=photo.width*s,dh=photo.height*s,fx=innerWidth<720?.62:.5,fy=innerWidth<720?.4:.38;
+    gl.uniform4f(U.uCover,(W-dw)*fx,(H-dh)*fy,dw,dh);
+    gl.uniform4f(U.uLogo,(lr.left-sr.left)*dpr,(lr.top-sr.top)*dpr,lr.width*dpr,lr.height*dpr);
+    gl.uniform4fv(U.uDrops,drops);
+    gl.drawArrays(gl.TRIANGLES,0,3);
+    requestAnimationFrame(frame);
+  }
+})();
+</script>
+</body>
+</html>

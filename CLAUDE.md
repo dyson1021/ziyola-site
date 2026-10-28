@@ -1,0 +1,51 @@
+# ZIYOLA Official Site — 引き継ぎメモ
+
+大阪発ラウドロックバンド ZIYOLA（ジオラ）の公式サイト。静的ワンページ（index.html + assets/）。
+
+## 公開中のアーティファクト
+- https://claude.ai/artifact/84an1pTg4jA4wyyZzDpwQQ
+- 更新するときは Artifact ツールで `url` にこのURLを渡し、`index.html` を publish（assets は `files` で `assets/xxx` にマップ）。
+- 注意: アーティファクトは claude.ai 側で `<!doctype html><head>…` のスケルトンが自動付与される前提。
+  ローカル配信や Vercel 等に出す場合は index.html 先頭に `<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">` を足し、末尾を `</body></html>` で閉じること。
+
+## 構成
+- index.html — 全セクション: NAV / HERO / marquee / NEWS / LIVE / DISCOGRAPHY / MEMBER / VIDEO / GOODS / PROFILE / CONTACT / FOOTER
+- assets/hero.jpg — アー写（ヒーロー背景、2000px）
+- assets/logo.png — 白ロゴ（透過、ヒーロー用）
+- assets/cover-rebellion.jpg — RE:bellion ジャケット（900px）
+- assets/cover-nofate.jpg / cover-tsukiumi.jpg — NO FATE / 月海 ジャケット（225px、低解像度。高解像度版が来たら差し替え）
+- assets/cover-kyoumei.jpg — 共鳴 ジャケット（447px）
+
+## デザイン
+- 単一ダークテーマ。トークンは `:root` に集約（--bg / --fg / --accent #ff5a1f など）。
+- フォント: Anton（見出し）/ Noto Sans JP（本文）/ Barlow Condensed（ラベル）— Google Fonts。
+- ヒーロー: `.hero` 190vh、`.stage` sticky 100vh。ページを開くとアー写のみ → スクロールで `.dim` が暗転し `.wrap`（ロゴ・コピー・CTA）が下からフェードイン（JS onScroll）。prefers-reduced-motion 時は静的表示。
+- ヒーロー演出 = 提案A「共鳴」（2026.10 採用）。`#gl` の WebGL シェーダーが写真・暗転・ロゴ・グレインをまとめて描画（DOM のロゴ img は位置合わせ用に透明）。
+  - 波紋（衝撃波＋RGB分離）は **ロゴが出てから（prog>0.8）だけ、必ずロゴ中心から** 出す。範囲はロゴ幅×0.62 の横長楕円で、顔にかからないようにしている（ユーザー指示）。
+  - ロゴ着地時に大きな一撃、以降約2秒ごとの鼓動（2026.10 に 1.33秒から延長、ユーザー指示）。タップ/ドラッグもロゴ中心から。
+  - 左上 Sound ボタン（初期OFF）でキック＋ブリッジミュートを Web Audio で合成。
+  - WebGL 不可なら `.no-gl` → 従来の `.photo` + `.dim` 表示に戻る。reduced-motion は静止版。
+  - Scroll ヒントはナビ分（+72px）上げてある（以前は画面外で見えていなかった）。
+- 3案の提案ページとデモ: proposals/hero/（公開 https://claude.ai/artifact/2pJ7wrccFnYvLrhw9F3E33）
+- ロゴは中央揃え、幅 min(70%,540px)（2026.10 に 440px から拡大、ユーザー指示）。
+
+## 確定している実データ（出典: vk.gy / TuneCore / Apple Music / YouTube）
+- メンバー: Vo.MAHO（2026年新加入）/ Gt.将 @ZIYOLA_SHO / Ba.Bucchi @ZIYOLA_bucchi
+- ディスコ: 共鳴 2022.01.07 / 月海 2022.06.29（月海・冥海・correct）/ NO FATE 2023.08.01（7曲）/ RE:bellion 2025.01.12
+- YouTube: ZIYOLA official（UCThuoJ-cnPDVBzeGMM2Jozg, @ziyola2022）、RE:bellion MV = EoWnbLm7fxk、correct ライブリリック = 2E_ur-UspVY
+- Apple Music artist 1602905165 / Spotify artist 7pkDwJHq6KzD7Vg4l7g04T / TuneCore ZIYOLA-108
+- 公式X @ZIYOLA_official / Instagram ziyola__official
+
+## ユーザー指示で決まっていること
+- AVELDCAIN（前身バンド）への言及は載せない
+- MEMBER の紹介文は載せない（パート・名前・SNSのみ）
+- ヒーローのロゴは写真を隠さないサイズで中央
+
+## 未着手・素材待ち
+- ジャケット画像の高解像度版: NO FATE / 月海（現在225px。共鳴も447pxなので可能なら900px級）
+- メンバー個別写真（`.mem .photo` は現状グラデ＋パート略号のプレースホルダー、3:4）
+- MAHO の X / Instagram
+- LIVE 日程（現在「決定次第発表」のTBAカード1枚）
+- CONTACT の公式メール（現在は @ZIYOLA_official DM 案内）
+- ナビ/フッターの「ZIYOLA」はテキストのまま（ロゴ画像化するか要確認）
+- GOODS のオンラインストアURL

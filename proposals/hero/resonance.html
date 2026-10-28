@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>ZIYOLA HERO A — 共鳴</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@400;600;700&family=Noto+Sans+JP:wght@400;500;700;900&display=swap">
+<style>
+/* Plan A「共鳴 RESONANCE」: every tap is a kick + palm-muted chug; the shockwave travels through the photo and splits the logo's RGB. */
+:root{
+  --bg:#0b0a09;--bg-2:#141210;--bg-3:#1d1a17;--fg:#efe9df;--fg-dim:#9d948a;--line:#2c2823;--accent:#ff5a1f;--steel:#8aa0ad;
+  --display:'Anton','Impact','Arial Narrow Bold',sans-serif;
+  --body:'Noto Sans JP','Hiragino Sans','Yu Gothic',sans-serif;
+  --util:'Barlow Condensed','Arial Narrow',sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.8;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+a{color:inherit}
+img{max-width:100%;display:block}
+h1,h2,h3{margin:0;text-wrap:balance;line-height:1}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:rgba(11,10,9,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:12px}
+.brand{font-family:var(--display);font-size:26px;letter-spacing:.08em;text-decoration:none;color:var(--fg)}
+.brand span{color:var(--accent)}
+.menu{display:flex;gap:22px;list-style:none;margin:0;padding:0;font-family:var(--util);font-weight:600;font-size:15px;letter-spacing:.16em;text-transform:uppercase}
+.menu a{text-decoration:none;color:var(--fg-dim)}
+@media(max-width:720px){.menu{display:none}}
+
+.hero{position:relative;border-bottom:1px solid var(--line);background:var(--bg);height:190vh}
+.hero .stage{position:sticky;top:0;height:100vh;overflow:hidden;background:url("assets/hero.jpg") center 38%/cover no-repeat;touch-action:pan-y;cursor:crosshair;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
+.hero canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.hero .wrap{position:absolute;left:0;right:0;bottom:0;display:grid;gap:18px;padding-bottom:56px;opacity:0;transform:translateY(40px);justify-items:center;text-align:center}
+.kicker{font-family:var(--util);font-weight:600;letter-spacing:.3em;text-transform:uppercase;color:var(--accent);font-size:14px}
+.hero h1.logo{width:100%;display:flex;justify-content:center;line-height:0}
+.hero h1.logo img{width:min(60%,440px);height:auto;margin:0 auto}
+.gl .hero h1.logo img{opacity:0}
+.hero .sub{display:grid;gap:10px;max-width:46ch}
+.hero .sub p{margin:0;font-size:16px;color:var(--fg);text-shadow:0 1px 12px rgba(0,0,0,.8)}
+.hero .tag{font-family:var(--util);letter-spacing:.22em;text-transform:uppercase;color:var(--fg-dim);font-size:13px}
+.cta{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.btn{font-family:var(--util);font-weight:700;letter-spacing:.2em;text-transform:uppercase;font-size:15px;padding:14px 26px;text-decoration:none;border:2px solid var(--accent);color:var(--fg);background:transparent;transition:background .2s,color .2s}
+.btn.solid{background:var(--accent);color:#0b0a09}
+.btn:hover{background:var(--accent);color:#0b0a09}
+.hint{position:absolute;left:0;right:0;bottom:calc(max(24px,env(safe-area-inset-bottom,0px)) + 72px);text-align:center;font-family:var(--util);letter-spacing:.3em;text-transform:uppercase;font-size:12px;color:var(--fg);text-shadow:0 1px 8px rgba(0,0,0,.8);pointer-events:none;display:grid;gap:4px}
+.hint b{font-weight:700;color:var(--accent)}
+.sound{position:absolute;left:max(16px,env(safe-area-inset-left,0px));top:16px;z-index:2;font:700 12px var(--util);letter-spacing:.24em;text-transform:uppercase;color:var(--fg);background:rgba(11,10,9,.55);border:1px solid rgba(239,233,223,.35);padding:8px 12px;cursor:pointer;display:flex;align-items:center;gap:8px}
+.sound i{width:8px;height:8px;border-radius:50%;background:var(--fg-dim)}
+.sound[aria-pressed="true"]{border-color:var(--accent)}
+.sound[aria-pressed="true"] i{background:var(--accent);box-shadow:0 0 10px var(--accent)}
+.marquee{border-bottom:1px solid var(--line);background:var(--accent);color:#0b0a09;overflow:hidden;white-space:nowrap;font-family:var(--display);font-size:22px;letter-spacing:.14em;text-transform:uppercase;padding-block:8px}
+.marquee div{display:inline-block;animation:slide 28s linear infinite;padding-left:100%}
+@keyframes slide{to{transform:translateX(-100%)}}
+.after{padding-block:72px;min-height:60vh}
+.after h2{font-family:var(--display);font-size:clamp(44px,8vw,88px);letter-spacing:.04em;text-transform:uppercase;line-height:.9;margin-bottom:24px}
+.after p{color:var(--fg-dim);max-width:60ch;margin:0}
+.switch{white-space:nowrap;position:fixed;right:max(12px,env(safe-area-inset-right,0px));bottom:max(12px,env(safe-area-inset-bottom,0px));z-index:20;display:flex;gap:2px;font:600 12px var(--util);letter-spacing:.16em;text-transform:uppercase;background:rgba(11,10,9,.9);border:1px solid var(--line);padding:3px}
+.switch a{text-decoration:none;color:var(--fg-dim);padding:7px 10px}
+.switch a[aria-current]{color:#0b0a09;background:var(--accent)}
+@media(max-width:720px){.switch{top:calc(env(safe-area-inset-top,0px) + 13px);bottom:auto;font-size:11px;letter-spacing:.08em}.switch a{padding:6px 7px}}
+@media(prefers-reduced-motion:reduce){.hero{height:auto}.hero .stage{position:relative;height:auto;min-height:100vh}.hero .wrap{opacity:1!important;transform:none!important;background:linear-gradient(180deg,transparent,rgba(11,10,9,.85) 40%)}.gl .hero h1.logo img{opacity:1}.hint,.sound,.hero canvas{display:none}.marquee div{animation:none;padding-left:0}}
+</style>
+</head>
+<body>
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top">ZIYO<span>LA</span></a>
+    <ul class="menu"><li><a href="#news">News</a></li><li><a href="#news">Live</a></li><li><a href="#news">Discography</a></li><li><a href="#news">Member</a></li><li><a href="#news">Video</a></li><li><a href="#news">Contact</a></li></ul>
+  </div>
+</header>
+
+<section class="hero" id="top">
+  <div class="stage" id="stage">
+    <canvas id="gl" aria-hidden="true"></canvas>
+    <button class="sound" id="sound" type="button" aria-pressed="false"><i></i><span>Sound off</span></button>
+    <div class="wrap" id="wrap">
+      <div class="kicker">Loud Rock Band / Osaka, Japan / 新体制準備中</div>
+      <h1 class="logo"><img id="logo" src="assets/logo.png" alt="ZIYOLA"></h1>
+      <div class="sub">
+        <p>大阪発ラウドロックバンド ZIYOLA（ジオラ）オフィシャルサイト。Vo.MAHO を迎えた新体制で始動。</p>
+        <div class="tag">Vo.MAHO / Gt.将 / Ba.Bucchi — since 2022</div>
+      </div>
+      <div class="cta">
+        <a class="btn solid" href="https://www.youtube.com/watch?v=EoWnbLm7fxk" target="_blank" rel="noopener">Watch「RE:bellion」</a>
+        <a class="btn" href="#news">Listen</a>
+      </div>
+    </div>
+    <div class="hint" id="hint"><span><b>Tap</b> to resonate</span><span>Scroll</span></div>
+  </div>
+</section>
+<div class="marquee" aria-hidden="true"><div>NEW VOCAL MAHO JOINED &nbsp;///&nbsp; 3rd SINGLE「RE:bellion」NOW STREAMING &nbsp;///&nbsp; NEW VOCAL MAHO JOINED &nbsp;///&nbsp; 3rd SINGLE「RE:bellion」NOW STREAMING &nbsp;///&nbsp;</div></div>
+<section class="after" id="news"><div class="wrap"><h2>News</h2><p>（ここから下は本番サイトと同じ構成。デモではヒーローだけを差し替えています）</p></div></section>
+
+<nav class="switch" aria-label="案の切り替え"><a href="index.html">3案</a><a href="resonance.html" aria-current="page">A 共鳴</a><a href="tsukiumi.html">B 月海</a><a href="rebellion.html">C RE:bellion</a></nav>
+
+<script>
+(function(){
+  var stage=document.getElementById('stage'),hero=stage.parentNode,wrap=document.getElementById('wrap'),hint=document.getElementById('hint'),logoEl=document.getElementById('logo'),cv=document.getElementById('gl');
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduce)return;
+
+  /* ---------- sound: kick + palm-muted E5 chug, synthesized ---------- */
+  var ac=null,master=null,shaper=null,soundOn=false,sbtn=document.getElementById('sound');
+  function curve(k){var n=1024,c=new Float32Array(n);for(var i=0;i<n;i++){var x=i*2/n-1;c[i]=(1+k)*x/(1+k*Math.abs(x))}return c}
+  sbtn.addEventListener('click',function(e){
+    e.stopPropagation();
+    soundOn=!soundOn;
+    if(soundOn&&!ac){
+      try{
+        ac=new (window.AudioContext||window.webkitAudioContext)();
+        var comp=ac.createDynamicsCompressor();comp.threshold.value=-14;comp.ratio.value=6;
+        master=ac.createGain();master.gain.value=.7;master.connect(comp);comp.connect(ac.destination);
+        shaper=ac.createWaveShaper();shaper.curve=curve(60);shaper.oversample='4x';
+        var lp=ac.createBiquadFilter();lp.type='lowpass';lp.frequency.value=2400;shaper.connect(lp);lp.connect(master);
+      }catch(err){soundOn=false}
+    }
+    if(ac&&ac.state==='suspended')ac.resume();
+    sbtn.setAttribute('aria-pressed',soundOn);
+    sbtn.querySelector('span').textContent=soundOn?'Sound on':'Sound off';
+  });
+  function playHit(amp){
+    if(!soundOn||!ac)return;
+    var t=ac.currentTime,o=ac.createOscillator(),g=ac.createGain();
+    o.type='sine';o.frequency.setValueAtTime(160,t);o.frequency.exponentialRampToValueAtTime(40,t+.3);
+    g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(1.1*amp,t+.004);g.gain.exponentialRampToValueAtTime(.0001,t+.45);
+    o.connect(g);g.connect(master);o.start(t);o.stop(t+.5);
+    if(amp<.5)return;
+    // low E + B power chord, palm muted
+    var cg=ac.createGain();cg.gain.setValueAtTime(.0001,t);cg.gain.exponentialRampToValueAtTime(.35*amp,t+.006);cg.gain.exponentialRampToValueAtTime(.0001,t+.22);
+    cg.connect(shaper);
+    [41.2,61.7,82.4].forEach(function(f,i){var s=ac.createOscillator();s.type='sawtooth';s.frequency.value=f;s.detune.value=(i-1)*6;s.connect(cg);s.start(t);s.stop(t+.25)});
+  }
+
+  /* ---------- WebGL ---------- */
+  var gl=cv.getContext('webgl',{antialias:false,premultipliedAlpha:false,preserveDrawingBuffer:false});
+  if(!gl)return fallback();
+  var VS='attribute vec2 a;void main(){gl_Position=vec4(a,0.,1.);}';
+  var FS=[
+  'precision highp float;',
+  'uniform vec2 uRes;uniform float uTime,uProg,uKick,uDpr;uniform vec4 uCover,uLogo;uniform sampler2D uPhoto,uLogoT;uniform vec4 uHits[8];',
+  'const vec3 BG=vec3(.043,.039,.035);const vec3 ACC=vec3(1.,.353,.122);',
+  'float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}',
+  'vec3 ph(vec2 p){return texture2D(uPhoto,clamp((p-uCover.xy)/uCover.zw,0.,1.)).rgb;}',
+  'float lg(vec2 p){vec2 u=(p-uLogo.xy)/uLogo.zw;if(u.x<0.||u.y<0.||u.x>1.||u.y>1.)return 0.;return texture2D(uLogoT,u).a;}',
+  'void main(){',
+  ' vec2 p=vec2(gl_FragCoord.x,uRes.y-gl_FragCoord.y);vec2 c=uRes*.5;float m=min(uRes.x,uRes.y);',
+  ' p=c+(p-c)*(1.-.022*uKick);',
+  ' vec2 off=vec2(0.),ca=vec2(0.);float ring=0.;',
+  ' for(int i=0;i<8;i++){vec4 h=uHits[i];float age=uTime-h.z;if(h.w<=0.||age<0.||age>1.8)continue;',
+  '  vec2 d=p-h.xy;float dist=length(d);vec2 dir=d/max(dist,1.);',
+  '  float rad=age*m*1.15;float w=m*(.05+.05*age);float k=(dist-rad)/w;float fade=pow(1.-age/1.8,2.)*h.w;',
+  '  float g=exp(-k*k);off+=dir*(-k*g)*m*.075*fade;ca+=dir*g*fade;ring+=g*fade;}',
+  ' vec2 q=p+off;vec2 cav=ca*m*.018+(p-c)/m*uDpr*(1.5+5.*uKick);',
+  ' vec3 col=vec3(ph(q+cav).r,ph(q).g,ph(q-cav).b);',
+  ' float y=p.y/uRes.y;float dA=mix(.2,.78,smoothstep(0.,.7,y));dA=mix(dA,1.,smoothstep(.72,1.,y));',
+  ' col=mix(col,BG,dA*uProg*.95);',
+  ' col*=1.+ring*.55;col+=ACC*ring*.22;',
+  ' vec2 lq=q+off*.6;vec2 lc=cav*1.3+vec2(uKick*7.*uDpr,0.);',
+  ' vec3 la=vec3(lg(lq+lc),lg(lq),lg(lq-lc));',
+  ' float gsum=0.;for(int j=0;j<12;j++){float an=float(j)*.5236;float rr=(mod(float(j),3.)+1.)*9.*uDpr;gsum+=lg(lq+vec2(cos(an),sin(an))*rr*(1.+uKick));}',
+  ' col+=ACC*pow(gsum/12.,1.5)*uProg*(.35+uKick*1.1);',
+  ' col=col*(1.-la*uProg)+la*uProg*vec3(.97,.95,.92);',
+  ' col+=(hash(floor(p/(2.*uDpr))+fract(uTime*7.)*91.)-.5)*.07;',
+  ' vec2 v=(p-c)/uRes;col*=1.-.55*dot(v,v);',
+  ' gl_FragColor=vec4(col,1.);}'
+  ].join('\n');
+  function sh(t,s){var o=gl.createShader(t);gl.shaderSource(o,s);gl.compileShader(o);if(!gl.getShaderParameter(o,gl.COMPILE_STATUS))throw gl.getShaderInfoLog(o);return o}
+  var pr;
+  try{pr=gl.createProgram();gl.attachShader(pr,sh(gl.VERTEX_SHADER,VS));gl.attachShader(pr,sh(gl.FRAGMENT_SHADER,FS));gl.linkProgram(pr);if(!gl.getProgramParameter(pr,gl.LINK_STATUS))throw 'link'}catch(e){return fallback()}
+  gl.useProgram(pr);
+  var buf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buf);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW);
+  var aLoc=gl.getAttribLocation(pr,'a');gl.enableVertexAttribArray(aLoc);gl.vertexAttribPointer(aLoc,2,gl.FLOAT,false,0,0);
+  var U={};['uRes','uTime','uProg','uKick','uDpr','uCover','uLogo','uPhoto','uLogoT','uHits'].forEach(function(n){U[n]=gl.getUniformLocation(pr,n)});
+  function tex(unit,img){var t=gl.createTexture();gl.activeTexture(gl.TEXTURE0+unit);gl.bindTexture(gl.TEXTURE_2D,t);
+    gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
+    gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,img);}
+  function load(src){return new Promise(function(res,rej){var i=new Image();i.onload=function(){res(i)};i.onerror=rej;i.src=src})}
+  var photo,dpr=1,W=0,H=0;
+  Promise.all([load('assets/hero.jpg'),load('assets/logo.png')]).then(function(r){
+    photo=r[0];
+    try{tex(0,r[0]);tex(1,r[1])}catch(e){return fallback()}
+    gl.uniform1i(U.uPhoto,0);gl.uniform1i(U.uLogoT,1);
+    document.documentElement.classList.add('gl');
+    resize();loop();
+  },fallback);
+  function fallback(){document.documentElement.classList.remove('gl');cv.style.display='none'}
+
+  function resize(){
+    dpr=Math.min(devicePixelRatio||1,innerWidth<720?1.5:2);
+    W=Math.round(stage.clientWidth*dpr);H=Math.round(stage.clientHeight*dpr);
+    cv.width=W;cv.height=H;gl.viewport(0,0,W,H);
+  }
+  addEventListener('resize',resize);
+
+  /* ---------- hits ---------- */
+  var hits=new Float32Array(32),hi=0,t0=performance.now();
+  function now(){return (performance.now()-t0)/1000}
+  function hit(x,y,amp){hits.set([x*dpr,y*dpr,now(),amp],hi*4);hi=(hi+1)%8;playHit(amp)}
+  var lastDrag=0,down=false;
+  stage.addEventListener('pointerdown',function(e){
+    if(e.target.closest('a,button'))return;
+    var r=stage.getBoundingClientRect();down=true;hit(e.clientX-r.left,e.clientY-r.top,1);lastDrag=performance.now();
+  });
+  stage.addEventListener('pointermove',function(e){
+    if(!down||e.pointerType==='touch')return;
+    if(performance.now()-lastDrag<110)return;lastDrag=performance.now();
+    var r=stage.getBoundingClientRect();hit(e.clientX-r.left,e.clientY-r.top,.45);
+  });
+  addEventListener('pointerup',function(){down=false});addEventListener('pointercancel',function(){down=false});
+
+  /* ---------- loop ---------- */
+  var prog=0,armed=true,lastPulse=0,visible=true,running=false;
+  function loop(){if(!running&&photo){running=true;requestAnimationFrame(frame)}}
+  new IntersectionObserver(function(es){visible=es[0].isIntersecting;if(visible)loop()}).observe(hero);
+  function frame(){
+    if(!visible){running=false;return}
+    var y=scrollY,vh=innerHeight,range=Math.max(1,hero.offsetHeight-vh);
+    var t=Math.min(1,Math.max(0,y/(range*.75)));var e=t*t*(3-2*t);prog=e;
+    wrap.style.opacity=e;wrap.style.transform='translateY('+(40*(1-e))+'px)';
+    hint.style.opacity=1-Math.min(1,y/(vh*.25));
+    var sr=stage.getBoundingClientRect(),lr=logoEl.getBoundingClientRect();
+    var tt=now();
+    // entrance hit when the logo lands
+    if(e>.8&&armed){armed=false;hit(lr.left-sr.left+lr.width/2,lr.top-sr.top+lr.height/2,1.4)}
+    if(e<.3)armed=true;
+    // idle heartbeat (~ 90bpm feel, every 2 beats)
+    if(tt-lastPulse>1.33){lastPulse=tt;hit(e>.5?lr.left-sr.left+lr.width/2:sr.width*.5,e>.5?lr.top-sr.top+lr.height/2:sr.height*.45,.28)}
+    var kick=0;for(var i=0;i<8;i++){var a=tt-hits[i*4+2];if(hits[i*4+3]>0&&a>=0&&a<1)kick=Math.max(kick,hits[i*4+3]*Math.exp(-a*7))}
+    gl.uniform2f(U.uRes,W,H);gl.uniform1f(U.uTime,tt);gl.uniform1f(U.uProg,prog);gl.uniform1f(U.uKick,Math.min(kick,1.4));gl.uniform1f(U.uDpr,dpr);
+    var s=Math.max(W/photo.width,H/photo.height),dw=photo.width*s,dh=photo.height*s,fx=innerWidth<720?.62:.5,fy=innerWidth<720?.4:.38;
+    gl.uniform4f(U.uCover,(W-dw)*fx,(H-dh)*fy,dw,dh);
+    gl.uniform4f(U.uLogo,(lr.left-sr.left)*dpr,(lr.top-sr.top)*dpr,lr.width*dpr,lr.height*dpr);
+    gl.uniform4fv(U.uHits,hits);
+    gl.drawArrays(gl.TRIANGLES,0,3);
+    requestAnimationFrame(frame);
+  }
+})();
+</script>
+</body>
+</html>

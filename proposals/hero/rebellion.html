@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>ZIYOLA HERO C — RE:bellion</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@400;600;700&family=Noto+Sans+JP:wght@400;500;700;900&display=swap">
+<style>
+/* Plan C「RE:bellion」: a monochrome pane of glass in front of the new line-up. A bullet hits, cracks run, the pane bursts and the colour photo is behind it. Scroll-scrubbed, so it reassembles on the way back up. */
+:root{
+  --bg:#0b0a09;--bg-2:#141210;--bg-3:#1d1a17;--fg:#efe9df;--fg-dim:#9d948a;--line:#2c2823;--accent:#ff5a1f;--steel:#8aa0ad;
+  --display:'Anton','Impact','Arial Narrow Bold',sans-serif;
+  --body:'Noto Sans JP','Hiragino Sans','Yu Gothic',sans-serif;
+  --util:'Barlow Condensed','Arial Narrow',sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.8;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+a{color:inherit}
+img{max-width:100%;display:block}
+h1,h2,h3{margin:0;text-wrap:balance;line-height:1}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:rgba(11,10,9,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:12px}
+.brand{font-family:var(--display);font-size:26px;letter-spacing:.08em;text-decoration:none;color:var(--fg)}
+.brand span{color:var(--accent)}
+.menu{display:flex;gap:22px;list-style:none;margin:0;padding:0;font-family:var(--util);font-weight:600;font-size:15px;letter-spacing:.16em;text-transform:uppercase}
+.menu a{text-decoration:none;color:var(--fg-dim)}
+@media(max-width:720px){.menu{display:none}}
+
+.hero{position:relative;border-bottom:1px solid var(--line);background:var(--bg);height:260vh}
+.hero .stage{position:sticky;top:0;height:100vh;overflow:hidden;background:url("assets/hero.jpg") center 38%/cover no-repeat;touch-action:pan-y;cursor:crosshair;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
+.hero canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.hero .dim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,10,9,.2),rgba(11,10,9,.78) 70%,var(--bg));opacity:0}
+.hero .wrap{position:absolute;left:0;right:0;bottom:0;display:grid;gap:18px;padding-bottom:56px;opacity:0;transform:translateY(40px);justify-items:center;text-align:center}
+.kicker{font-family:var(--util);font-weight:600;letter-spacing:.3em;text-transform:uppercase;color:var(--accent);font-size:14px}
+.hero h1.logo{width:100%;display:flex;justify-content:center;line-height:0}
+.hero h1.logo img{width:min(60%,440px);height:auto;margin:0 auto}
+.hero .sub{display:grid;gap:10px;max-width:46ch}
+.hero .sub p{margin:0;font-size:16px;color:var(--fg);text-shadow:0 1px 12px rgba(0,0,0,.8)}
+.hero .tag{font-family:var(--util);letter-spacing:.22em;text-transform:uppercase;color:var(--fg-dim);font-size:13px}
+.cta{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.btn{font-family:var(--util);font-weight:700;letter-spacing:.2em;text-transform:uppercase;font-size:15px;padding:14px 26px;text-decoration:none;border:2px solid var(--accent);color:var(--fg);background:transparent;transition:background .2s,color .2s}
+.btn.solid{background:var(--accent);color:#0b0a09}
+.btn:hover{background:var(--accent);color:#0b0a09}
+.hint{position:absolute;left:0;right:0;bottom:calc(max(24px,env(safe-area-inset-bottom,0px)) + 72px);text-align:center;font-family:var(--util);letter-spacing:.3em;text-transform:uppercase;font-size:12px;color:var(--fg);text-shadow:0 1px 8px rgba(0,0,0,.8);pointer-events:none;display:grid;gap:4px}
+.hint b{font-weight:700;color:var(--accent)}
+.marquee{border-bottom:1px solid var(--line);background:var(--accent);color:#0b0a09;overflow:hidden;white-space:nowrap;font-family:var(--display);font-size:22px;letter-spacing:.14em;text-transform:uppercase;padding-block:8px}
+.marquee div{display:inline-block;animation:slide 28s linear infinite;padding-left:100%}
+@keyframes slide{to{transform:translateX(-100%)}}
+.after{padding-block:72px;min-height:60vh}
+.after h2{font-family:var(--display);font-size:clamp(44px,8vw,88px);letter-spacing:.04em;text-transform:uppercase;line-height:.9;margin-bottom:24px}
+.after p{color:var(--fg-dim);max-width:60ch;margin:0}
+.switch{white-space:nowrap;position:fixed;right:max(12px,env(safe-area-inset-right,0px));bottom:max(12px,env(safe-area-inset-bottom,0px));z-index:20;display:flex;gap:2px;font:600 12px var(--util);letter-spacing:.16em;text-transform:uppercase;background:rgba(11,10,9,.9);border:1px solid var(--line);padding:3px}
+.switch a{text-decoration:none;color:var(--fg-dim);padding:7px 10px}
+.switch a[aria-current]{color:#0b0a09;background:var(--accent)}
+@media(max-width:720px){.switch{top:calc(env(safe-area-inset-top,0px) + 13px);bottom:auto;font-size:11px;letter-spacing:.08em}.switch a{padding:6px 7px}}
+@media(prefers-reduced-motion:reduce){.hero{height:auto}.hero .stage{position:relative;height:auto;min-height:100vh}.hero .wrap{opacity:1!important;transform:none!important;background:linear-gradient(180deg,transparent,rgba(11,10,9,.85) 40%)}.gl .hero h1.logo img{opacity:1}.hint,.hero canvas{display:none}.hero .dim{opacity:.9!important}.marquee div{animation:none;padding-left:0}}
+</style>
+</head>
+<body>
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top">ZIYO<span>LA</span></a>
+    <ul class="menu"><li><a href="#news">News</a></li><li><a href="#news">Live</a></li><li><a href="#news">Discography</a></li><li><a href="#news">Member</a></li><li><a href="#news">Video</a></li><li><a href="#news">Contact</a></li></ul>
+  </div>
+</header>
+
+<section class="hero" id="top">
+  <div class="stage" id="stage">
+    <div class="dim" id="dim"></div>
+    <canvas id="glass" aria-hidden="true"></canvas>
+    <div class="wrap" id="wrap">
+      <div class="kicker">Loud Rock Band / Osaka, Japan / 新体制準備中</div>
+      <h1 class="logo"><img id="logo" src="assets/logo.png" alt="ZIYOLA"></h1>
+      <div class="sub">
+        <p>大阪発ラウドロックバンド ZIYOLA（ジオラ）オフィシャルサイト。Vo.MAHO を迎えた新体制で始動。</p>
+        <div class="tag">Vo.MAHO / Gt.将 / Ba.Bucchi — since 2022</div>
+      </div>
+      <div class="cta">
+        <a class="btn solid" href="https://www.youtube.com/watch?v=EoWnbLm7fxk" target="_blank" rel="noopener">Watch「RE:bellion」</a>
+        <a class="btn" href="#news">Listen</a>
+      </div>
+    </div>
+    <div class="hint" id="hint"><span><b>Tap</b> the glass to shoot</span><span>Scroll</span></div>
+  </div>
+</section>
+<div class="marquee" aria-hidden="true"><div>NEW VOCAL MAHO JOINED &nbsp;///&nbsp; 3rd SINGLE「RE:bellion」NOW STREAMING &nbsp;///&nbsp; NEW VOCAL MAHO JOINED &nbsp;///&nbsp; 3rd SINGLE「RE:bellion」NOW STREAMING &nbsp;///&nbsp;</div></div>
+<section class="after" id="news"><div class="wrap"><h2>News</h2><p>（ここから下は本番サイトと同じ構成。デモではヒーローだけを差し替えています）</p></div></section>
+
+<nav class="switch" aria-label="案の切り替え"><a href="index.html">3案</a><a href="resonance.html">A 共鳴</a><a href="tsukiumi.html">B 月海</a><a href="rebellion.html" aria-current="page">C RE:bellion</a></nav>
+
+<script>
+(function(){
+  var stage=document.getElementById('stage'),hero=stage.parentNode,wrap=document.getElementById('wrap'),hint=document.getElementById('hint'),dim=document.getElementById('dim'),cv=document.getElementById('glass');
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches){wrap.style.opacity=1;return}
+  var ctx=cv.getContext('2d'),glass=document.createElement('canvas'),photo=null;
+  var W=0,H=0,dpr=1,impact={x:.5,y:.4},shards=[],cracks=[],maxD=1,hole=null;
+  var TAU=Math.PI*2;
+
+  function rng(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+  function sstep(a,b,x){x=Math.min(1,Math.max(0,(x-a)/(b-a)));return x*x*(3-2*x)}
+
+  /* ---------- the pane: monochrome photo + scanlines + reflections ---------- */
+  function buildGlass(){
+    glass.width=W;glass.height=H;var g=glass.getContext('2d');
+    var s=Math.max(W/photo.width,H/photo.height),dw=photo.width*s,dh=photo.height*s,fx=innerWidth<720?.62:.5,fy=innerWidth<720?.4:.38;
+    g.drawImage(photo,(W-dw)*fx,(H-dh)*fy,dw,dh);
+    var id=g.getImageData(0,0,W,H),d=id.data;
+    for(var i=0;i<d.length;i+=4){var l=(d[i]*.3+d[i+1]*.59+d[i+2]*.11)/255;var v=Math.pow(l,1.1)*255*.78+8;d[i]=v*.9;d[i+1]=v*.96;d[i+2]=Math.min(255,v*1.1)}
+    g.putImageData(id,0,0);
+    g.fillStyle='rgba(0,0,0,.22)';for(var y=0;y<H;y+=3*dpr)g.fillRect(0,y,W,dpr);
+    var gr=g.createLinearGradient(0,0,W,H*.9);
+    [[0,0],[.34,0],[.4,.09],[.46,0],[.56,0],[.585,.05],[.61,0],[1,0]].forEach(function(c){gr.addColorStop(c[0],'rgba(220,232,255,'+c[1]+')')});
+    g.fillStyle=gr;g.fillRect(0,0,W,H);
+    var top=g.createLinearGradient(0,0,0,H);top.addColorStop(0,'rgba(255,255,255,.06)');top.addColorStop(.25,'rgba(255,255,255,0)');top.addColorStop(1,'rgba(0,0,0,.25)');
+    g.fillStyle=top;g.fillRect(0,0,W,H);
+  }
+
+  /* ---------- voronoi shards around the impact ---------- */
+  function clip(poly,nx,ny,c){var out=[];for(var i=0;i<poly.length;i++){var p=poly[i],q=poly[(i+1)%poly.length],dp=nx*p[0]+ny*p[1]-c,dq=nx*q[0]+ny*q[1]-c;
+    if(dp<=0)out.push(p);if((dp<=0)!==(dq<=0)){var k=dp/(dp-dq);out.push([p[0]+(q[0]-p[0])*k,p[1]+(q[1]-p[1])*k])}}return out}
+  function buildShards(){
+    var R=rng(1984),ix=impact.x*W,iy=impact.y*H,seeds=[];
+    maxD=Math.hypot(Math.max(ix,W-ix),Math.max(iy,H-iy));
+    for(var i=0;i<34;i++){var r=maxD*.85*Math.pow(R(),1.9)+8*dpr,a=R()*TAU,x=ix+Math.cos(a)*r,y=iy+Math.sin(a)*r;if(x>0&&y>0&&x<W&&y<H)seeds.push([x,y])}
+    for(i=0;i<30;i++)seeds.push([R()*W,R()*H]);
+    shards=[];cracks=[];
+    seeds.forEach(function(si,i){
+      var poly=[[0,0],[W,0],[W,H],[0,H]];
+      for(var j=0;j<seeds.length&&poly.length>2;j++){if(j===i)continue;var sj=seeds[j],nx=sj[0]-si[0],ny=sj[1]-si[1];poly=clip(poly,nx,ny,(nx*(si[0]+sj[0])+ny*(si[1]+sj[1]))/2)}
+      if(poly.length<3)return;
+      var cx=0,cy=0,bx=1e9,by=1e9,ex=-1e9,ey=-1e9;
+      poly.forEach(function(p){cx+=p[0];cy+=p[1];bx=Math.min(bx,p[0]);by=Math.min(by,p[1]);ex=Math.max(ex,p[0]);ey=Math.max(ey,p[1])});
+      cx/=poly.length;cy/=poly.length;
+      var dx=cx-ix,dy=cy-iy,dist=Math.hypot(dx,dy)||1,near=1-dist/maxD;
+      shards.push({poly:poly,cx:cx,cy:cy,bx:Math.floor(bx),by:Math.floor(by),bw:Math.ceil(ex-bx)+1,bh:Math.ceil(ey-by)+1,
+        dx:dx/dist,dy:dy/dist,delay:(dist/maxD)*.3+R()*.08,v:(.25+.55*R()+.6*near)*Math.max(W,H)*.55,rs:(R()-.5)*5,z:.2+R()*1.3,ph:R()*TAU});
+      for(var k=0;k<poly.length;k++){var a=poly[k],b=poly[(k+1)%poly.length],ex2=b[0]-a[0],ey2=b[1]-a[1],L=Math.hypot(ex2,ey2)||1,segs=Math.max(1,Math.round(L/(22*dpr))),prev=a;
+        for(var m=1;m<=segs;m++){var f=m/segs,j=m<segs?(R()-.5)*7*dpr:0,pt=[a[0]+ex2*f-ey2/L*j,a[1]+ey2*f+ex2/L*j];cracks.push({a:prev,b:pt,d:Math.hypot(pt[0]-ix,pt[1]-iy)});prev=pt}}
+    });
+    // radial cracks
+    for(i=0;i<12;i++){var ang=i/12*TAU+R()*.4,x0=ix,y0=iy,len=0,lim=maxD*(.45+R()*.7);
+      while(len<lim){var st=(18+R()*50)*dpr;ang+=(R()-.5)*.5;var x1=x0+Math.cos(ang)*st,y1=y0+Math.sin(ang)*st;cracks.push({a:[x0,y0],b:[x1,y1],d:len,ray:1});x0=x1;y0=y1;len+=st}}
+    // spiderweb rings near the hole
+    for(var ring=1;ring<=3;ring++){var rr=ring*ring*14*dpr,n=9+ring*3,prev=null,first=null;
+      for(i=0;i<=n;i++){var an=i/n*TAU,jr=rr*(.8+R()*.4),p=[ix+Math.cos(an)*jr,iy+Math.sin(an)*jr];if(prev)cracks.push({a:prev,b:p,d:rr,ray:1});prev=p}}
+    cracks.sort(function(a,b){return a.d-b.d});
+    hole={x:ix,y:iy};
+  }
+
+  function resize(){
+    if(!photo)return;
+    dpr=Math.min(devicePixelRatio||1,innerWidth<720?1.5:2);
+    W=Math.round(stage.clientWidth*dpr);H=Math.round(stage.clientHeight*dpr);cv.width=W;cv.height=H;
+    buildGlass();buildShards();
+  }
+  var rt;addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(resize,150)});
+
+  var img=new Image();img.onload=function(){photo=img;resize();loop()};img.src='assets/hero.jpg';
+
+  /* ---------- shot ---------- */
+  var fired=false,shotAt=-1e9,auto=null;
+  function now(){return performance.now()}
+  function fire(){fired=true;shotAt=now()}
+  stage.addEventListener('pointerdown',function(e){
+    if(e.target.closest('a,button'))return;
+    var p=prog();if(fired||p>.02)return;
+    var r=stage.getBoundingClientRect();impact={x:(e.clientX-r.left)/r.width,y:(e.clientY-r.top)/r.height};
+    buildShards();fire();
+    // carry the visitor through the break
+    var from=scrollY,to=hero.offsetTop+(hero.offsetHeight-innerHeight)*.9*.78,t0=now()+260,dur=1700;
+    auto=function(){var k=Math.min(1,Math.max(0,(now()-t0)/dur));k=k<.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2;scrollTo(0,from+(to-from)*k);if(k<1&&auto)requestAnimationFrame(auto);else auto=null};
+    requestAnimationFrame(auto);
+  });
+  ['wheel','touchstart','keydown'].forEach(function(ev){addEventListener(ev,function(){auto=null},{passive:true})});
+
+  function prog(){var range=Math.max(1,hero.offsetHeight-innerHeight);return Math.min(1,Math.max(0,(scrollY-hero.offsetTop)/(range*.9)))}
+
+  /* ---------- draw ---------- */
+  var visible=true,running=false,nextGlitch=now()+1800,glitchUntil=0,glitchSeed=1;
+  function loop(){if(!running&&photo){running=true;requestAnimationFrame(frame)}}
+  new IntersectionObserver(function(es){visible=es[0].isIntersecting;if(visible)loop()}).observe(hero);
+
+  function frame(){
+    if(!visible){running=false;return}
+    var t=prog(),tm=now();
+    if(t>.02&&!fired)fire();
+    if(t<.005&&fired&&tm-shotAt>800){fired=false}
+    var crack=sstep(.02,.28,t),s=Math.min(1,Math.max(0,(t-.3)/.42)),we=sstep(.7,.97,t);
+    wrap.style.opacity=we;wrap.style.transform='translateY('+(40*(1-we))+'px)';dim.style.opacity=we*.95;
+    hint.style.opacity=1-sstep(0,.05,t);
+    var since=tm-shotAt,tracerT=since/150,hit=fired&&since>150;
+    // shake
+    var sk=hit?Math.max(0,1-(since-150)/380):0;
+    cv.style.transform=sk?'translate('+((Math.random()-.5)*16*sk)+'px,'+((Math.random()-.5)*12*sk)+'px)':'';
+    ctx.setTransform(1,0,0,1,0,0);ctx.clearRect(0,0,W,H);
+    var ix=impact.x*W,iy=impact.y*H;
+    if(s<=0){
+      ctx.drawImage(glass,0,0);
+      // idle glitch on the pane
+      if(!fired&&tm>nextGlitch){glitchUntil=tm+160;nextGlitch=tm+1600+Math.random()*2200;glitchSeed++}
+      if(tm<glitchUntil){var G=rng(glitchSeed);for(var i=0;i<5;i++){var gy=G()*H,gh=(4+G()*40)*dpr,sh=(G()-.5)*60*dpr;ctx.drawImage(glass,0,gy,W,gh,sh,gy,W,gh)}
+        ctx.fillStyle='rgba(255,90,31,.55)';ctx.fillRect(0,G()*H,W,1.5*dpr)}
+      if(hit){
+        // cracks run outward from the hole
+        var R=crack*maxD*1.08+40*dpr*Math.min(1,(since-150)/120);
+        ctx.lineCap='round';
+        var c=0;[[.3,.9,1.3],[.6,.55,1],[9,.3,.8]].forEach(function(bd){
+          ctx.beginPath();for(;c<cracks.length&&cracks[c].d<R&&cracks[c].d<maxD*bd[0];c++){var k=cracks[c];ctx.moveTo(k.a[0],k.a[1]);ctx.lineTo(k.b[0],k.b[1])}
+          ctx.strokeStyle='rgba(210,225,255,'+bd[1]*.2+')';ctx.lineWidth=4*dpr*bd[2];ctx.stroke();
+          ctx.strokeStyle='rgba(240,245,255,'+bd[1]+')';ctx.lineWidth=bd[2]*dpr;ctx.stroke()});
+        // bullet hole
+        ctx.beginPath();ctx.arc(ix,iy,6*dpr,0,TAU);ctx.fillStyle='#050505';ctx.fill();
+        ctx.lineWidth=2.5*dpr;ctx.strokeStyle='rgba(255,255,255,.85)';ctx.stroke();
+        ctx.beginPath();ctx.arc(ix,iy,13*dpr,0,TAU);ctx.lineWidth=5*dpr;ctx.strokeStyle='rgba(255,255,255,.18)';ctx.stroke();
+      }
+    }else{
+      for(var n=0;n<shards.length;n++){
+        var p=shards[n],u=Math.min(1,Math.max(0,(s-p.delay)/.6));if(u>=1)continue;
+        var tx=p.dx*p.v*u,ty=p.dy*p.v*u+u*u*H*.9,rot=p.rs*u*u,sc=1+p.z*u,al=1-sstep(.5,1,u);
+        ctx.save();ctx.globalAlpha=al;ctx.translate(p.cx+tx,p.cy+ty);ctx.rotate(rot);ctx.scale(sc,sc);ctx.translate(-p.cx,-p.cy);
+        ctx.beginPath();ctx.moveTo(p.poly[0][0],p.poly[0][1]);for(var q=1;q<p.poly.length;q++)ctx.lineTo(p.poly[q][0],p.poly[q][1]);ctx.closePath();
+        ctx.save();ctx.clip();ctx.drawImage(glass,p.bx,p.by,p.bw,p.bh,p.bx,p.by,p.bw,p.bh);
+        ctx.fillStyle='rgba(215,230,255,'+(.04+.22*Math.pow(Math.abs(Math.sin(rot*1.7+p.ph)),6))+')';ctx.fill();ctx.restore();
+        ctx.lineWidth=1.4*dpr;ctx.strokeStyle='rgba(235,242,255,.6)';ctx.stroke();
+        ctx.restore();
+      }
+    }
+    // tracer: a blue streak from off-screen right, like the cover
+    if(fired&&tracerT<1.6){
+      var sx=W+60*dpr,sy=iy-H*.18,k2=Math.min(1,tracerT),hx=sx+(ix-sx)*k2,hy=sy+(iy-sy)*k2,tail=Math.max(0,k2-.35);
+      var gr=ctx.createLinearGradient(sx+(ix-sx)*tail,sy+(iy-sy)*tail,hx,hy);gr.addColorStop(0,'rgba(90,140,255,0)');gr.addColorStop(1,'rgba(225,238,255,'+(1-Math.max(0,tracerT-1)/.6)+')');
+      ctx.strokeStyle=gr;ctx.lineWidth=3*dpr;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(sx+(ix-sx)*tail,sy+(iy-sy)*tail);ctx.lineTo(hx,hy);ctx.stroke();
+    }
+    // muzzle-blue flash and sparks at the impact
+    if(hit&&since<650){
+      var f=1-(since-150)/500,rad=Math.min(W,H)*(.15+.5*(1-f));
+      var fg=ctx.createRadialGradient(ix,iy,0,ix,iy,rad);fg.addColorStop(0,'rgba(235,242,255,'+(.9*f)+')');fg.addColorStop(.25,'rgba(120,160,255,'+(.35*f)+')');fg.addColorStop(1,'rgba(80,120,255,0)');
+      ctx.globalCompositeOperation='lighter';ctx.fillStyle=fg;ctx.fillRect(ix-rad,iy-rad,rad*2,rad*2);
+      var SR=rng(shotAt|0);ctx.lineWidth=1.6*dpr;
+      for(var sp=0;sp<16;sp++){var a=SR()*TAU,r0=(1-f)*(80+SR()*260)*dpr,r1=r0+(10+SR()*30)*dpr;ctx.strokeStyle=SR()<.5?'rgba(255,120,50,'+f+')':'rgba(200,220,255,'+f+')';
+        ctx.beginPath();ctx.moveTo(ix+Math.cos(a)*r0,iy+Math.sin(a)*r0);ctx.lineTo(ix+Math.cos(a)*r1,iy+Math.sin(a)*r1);ctx.stroke()}
+      ctx.globalCompositeOperation='source-over';
+    }
+    requestAnimationFrame(frame);
+  }
+})();
+</script>
+</body>
+</html>

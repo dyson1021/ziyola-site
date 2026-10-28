@@ -1,0 +1,559 @@
+<title>ZIYOLA OFFICIAL</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@400;600;700&family=Noto+Sans+JP:wght@400;500;700;900&display=swap">
+<style>
+/* Layout concept: a black stage wall. Full-bleed bands stacked like a setlist, type set like a tour poster — one accent (molten orange), everything else asphalt and bone. Single committed dark look. */
+:root{
+  --bg:#0b0a09;
+  --bg-2:#141210;
+  --bg-3:#1d1a17;
+  --fg:#efe9df;
+  --fg-dim:#9d948a;
+  --line:#2c2823;
+  --accent:#ff5a1f;
+  --accent-deep:#b2340a;
+  --steel:#8aa0ad;
+  --display:'Anton','Impact','Arial Narrow Bold',sans-serif;
+  --body:'Noto Sans JP','Hiragino Sans','Yu Gothic',sans-serif;
+  --util:'Barlow Condensed','Arial Narrow',sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.8;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+a{color:inherit}
+img{max-width:100%;display:block}
+h1,h2,h3{margin:0;text-wrap:balance;line-height:1}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* nav */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:rgba(11,10,9,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:12px}
+.brand{font-family:var(--display);font-size:26px;letter-spacing:.08em;text-decoration:none;color:var(--fg)}
+.brand span{color:var(--accent)}
+.menu{display:flex;gap:22px;list-style:none;margin:0;padding:0;font-family:var(--util);font-weight:600;font-size:15px;letter-spacing:.16em;text-transform:uppercase}
+.menu a{text-decoration:none;color:var(--fg-dim);transition:color .2s}
+.menu a:hover{color:var(--accent)}
+@media(max-width:720px){.menu{display:none}}
+
+/* hero */
+.hero{position:relative;border-bottom:1px solid var(--line);background:var(--bg);height:190vh}
+.hero .stage{position:sticky;top:0;height:100vh;overflow:hidden}
+.hero .stage{touch-action:pan-y;cursor:crosshair;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
+.hero .photo{position:absolute;inset:0;background:url("assets/hero.jpg") center 38%/cover no-repeat}
+.hero .dim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,10,9,.2),rgba(11,10,9,.78) 70%,var(--bg));opacity:0}
+.hero canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.gl .hero h1.logo img{opacity:0}
+.sound{position:absolute;left:max(16px,env(safe-area-inset-left,0px));top:76px;z-index:2;font:700 12px var(--util);letter-spacing:.24em;text-transform:uppercase;color:var(--fg);background:rgba(11,10,9,.55);border:1px solid rgba(239,233,223,.35);padding:8px 12px;cursor:pointer;display:flex;align-items:center;gap:8px}
+.sound i{width:8px;height:8px;border-radius:50%;background:var(--fg-dim)}
+.sound[aria-pressed="true"]{border-color:var(--accent)}
+.sound[aria-pressed="true"] i{background:var(--accent);box-shadow:0 0 10px var(--accent)}
+.no-gl .sound{display:none}
+.hero .wrap{position:absolute;left:0;right:0;bottom:0;display:grid;gap:18px;padding-bottom:56px;opacity:0;transform:translateY(40px);justify-items:center;text-align:center}
+.hero .cta{justify-content:center}
+.hero .hint{position:absolute;left:0;right:0;bottom:calc(max(24px,env(safe-area-inset-bottom,0px)) + 72px);pointer-events:none;text-align:center;font-family:var(--util);letter-spacing:.3em;text-transform:uppercase;font-size:12px;color:var(--fg);text-shadow:0 1px 8px rgba(0,0,0,.8);animation:bob 1.8s ease-in-out infinite}
+.hero .tap{font-family:var(--util);letter-spacing:.3em;text-transform:uppercase;font-size:12px;color:var(--fg-dim)}
+.hero .tap b{font-weight:700;color:var(--accent)}
+.no-gl .hero .tap{display:none}
+@keyframes bob{50%{transform:translateY(6px)}}
+@media(max-width:720px){.hero .photo{background-position:62% 40%}}
+@media(prefers-reduced-motion:reduce){.hero{height:auto}.hero .stage{position:relative;height:auto;min-height:100vh}.hero .dim,.hero .wrap{opacity:1!important;transform:none!important}.hero .hint,.hero .tap,.sound,.hero canvas{display:none;animation:none}.gl .hero h1.logo img{opacity:1}}
+.kicker{font-family:var(--util);font-weight:600;letter-spacing:.3em;text-transform:uppercase;color:var(--accent);font-size:14px}
+.hero h1{font-family:var(--display);font-size:clamp(84px,19vw,240px);letter-spacing:.02em;line-height:.86;text-transform:uppercase;
+  background:linear-gradient(180deg,var(--fg) 55%,#b9b0a4);-webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 4px 24px rgba(0,0,0,.7)) drop-shadow(0 0 28px rgba(255,90,31,.25))}
+.hero h1.logo{filter:drop-shadow(0 6px 30px rgba(0,0,0,.8)) drop-shadow(0 0 40px rgba(255,90,31,.3));background:none;-webkit-background-clip:unset;background-clip:unset;color:inherit;line-height:0}
+.hero h1.logo{width:100%;display:flex;justify-content:center}
+.hero h1.logo img{width:min(70%,540px);height:auto;margin:0 auto}
+.hero .sub{display:grid;gap:10px;max-width:46ch}
+.hero .sub p{margin:0;font-size:16px;color:var(--fg);text-shadow:0 1px 12px rgba(0,0,0,.8)}
+.hero .tag{font-family:var(--util);letter-spacing:.22em;text-transform:uppercase;color:var(--fg-dim);font-size:13px}
+.cta{display:flex;flex-wrap:wrap;gap:12px}
+.btn{font-family:var(--util);font-weight:700;letter-spacing:.2em;text-transform:uppercase;font-size:15px;padding:14px 26px;text-decoration:none;border:2px solid var(--accent);color:var(--fg);background:transparent;transition:background .2s,color .2s,transform .1s}
+.btn.solid{background:var(--accent);color:#0b0a09}
+.btn:hover{background:var(--accent);color:#0b0a09}
+.btn:active{transform:translateY(1px)}
+.marquee{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--accent);color:#0b0a09;overflow:hidden;white-space:nowrap;font-family:var(--display);font-size:22px;letter-spacing:.14em;text-transform:uppercase;padding-block:8px}
+.marquee div{display:inline-block;animation:slide 28s linear infinite;padding-left:100%}
+@keyframes slide{to{transform:translateX(-100%)}}
+
+/* sections */
+.sec{padding-block:72px;border-bottom:1px solid var(--line)}
+.sec:nth-of-type(even){background:var(--bg-2)}
+.sec-head{display:flex;align-items:baseline;gap:18px;flex-wrap:wrap;margin-bottom:36px}
+.sec-head h2{font-family:var(--display);font-size:clamp(44px,8vw,88px);letter-spacing:.04em;text-transform:uppercase;line-height:.9}
+.sec-head .jp{font-family:var(--util);letter-spacing:.3em;color:var(--accent);font-size:14px;text-transform:uppercase}
+
+/* news */
+.news{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.news li{display:grid;grid-template-columns:120px 90px 1fr;gap:18px;align-items:center;padding:18px 0;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}
+.news time{font-family:var(--util);font-size:17px;letter-spacing:.08em;color:var(--fg-dim)}
+.chip{font-family:var(--util);font-size:12px;letter-spacing:.2em;text-transform:uppercase;padding:3px 8px;border:1px solid var(--accent);color:var(--accent);justify-self:start}
+.news a{text-decoration:none;min-width:0}
+.news a:hover{color:var(--accent)}
+@media(max-width:600px){.news li{grid-template-columns:1fr;gap:6px}}
+
+/* live */
+.live{display:grid;gap:14px}
+.gig{display:grid;grid-template-columns:150px 1fr auto;gap:22px;align-items:center;background:var(--bg-3);border-left:4px solid var(--accent);padding:22px 24px;min-width:0}
+.gig .date{font-family:var(--display);font-size:46px;line-height:.9;letter-spacing:.02em;font-variant-numeric:tabular-nums}
+.gig .date small{display:block;font-family:var(--util);font-size:14px;letter-spacing:.24em;color:var(--fg-dim);margin-top:6px;text-transform:uppercase}
+.gig .info{min-width:0;display:grid;gap:4px}
+.gig .info h3{font-size:18px;font-weight:900;line-height:1.3}
+.gig .info p{margin:0;font-size:14px;color:var(--fg-dim)}
+.gig .meta{font-family:var(--util);letter-spacing:.1em;font-size:14px;color:var(--steel)}
+.gig .act{white-space:nowrap}
+.gig.soldout{border-left-color:var(--fg-dim)}
+.gig.soldout .btn{border-color:var(--fg-dim);color:var(--fg-dim);pointer-events:none}
+@media(max-width:720px){.gig{grid-template-columns:1fr}.gig .act{white-space:normal}}
+
+/* disco */
+.disco{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px}
+.rec{display:grid;gap:12px;min-width:0;align-content:start}
+.cover{aspect-ratio:1;max-width:100%;background:var(--bg-3);border:1px solid var(--line);display:grid;place-items:center;position:relative;overflow:hidden}
+.cover img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.cover:has(img)::after{display:none}
+.cover::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(135deg,transparent 0 14px,rgba(255,255,255,.025) 14px 15px)}
+.cover b{font-family:var(--display);font-size:clamp(40px,4vw,52px);letter-spacing:.04em;text-transform:uppercase;color:var(--accent);text-align:center;line-height:.9;padding:16px;position:relative;z-index:1}
+.rec h3{font-size:17px;font-weight:900}
+.rec .type{font-family:var(--util);letter-spacing:.24em;text-transform:uppercase;font-size:12px;color:var(--fg-dim)}
+.rec .tracks{margin:0;padding-left:1.4em;font-size:13px;color:var(--fg-dim);line-height:1.9}
+.rec .links{display:flex;gap:10px;flex-wrap:wrap;font-family:var(--util);letter-spacing:.14em;font-size:13px;text-transform:uppercase}
+.rec .links a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--accent-deep)}
+
+/* members */
+.members{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px}
+.mem{background:var(--bg-3);border:1px solid var(--line);min-width:0;display:grid;grid-template-rows:auto 1fr;align-content:start}
+.mem .photo{aspect-ratio:3/4;max-width:100%;background:linear-gradient(180deg,#2a2521,#15130f);position:relative;display:grid;place-items:end start;padding:16px}
+.mem .photo::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 35%,rgba(255,90,31,.18),transparent 55%)}
+.mem .photo span{font-family:var(--display);font-size:72px;color:rgba(239,233,223,.08);line-height:1;position:relative}
+.mem .body{padding:16px 18px 20px;display:grid;gap:6px;align-content:start}
+.mem .part{font-family:var(--util);letter-spacing:.28em;text-transform:uppercase;font-size:12px;color:var(--accent)}
+.mem h3{font-size:20px;font-weight:900}
+.mem .en{font-family:var(--util);letter-spacing:.12em;color:var(--fg-dim);font-size:14px}
+.mem p{margin:6px 0 0;font-size:13px;color:var(--fg-dim)}
+.mem .sns{display:flex;gap:12px;font-family:var(--util);letter-spacing:.14em;font-size:13px;text-transform:uppercase;margin-top:8px}
+.mem .sns a{color:var(--steel);text-decoration:none}
+.mem .sns a:hover{color:var(--accent)}
+
+/* video / goods */
+.videos{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+.vid{text-decoration:none;display:grid;gap:10px;min-width:0}
+.vid .thumb{aspect-ratio:16/9;max-width:100%;background:#000;border:1px solid var(--line);display:grid;place-items:center;position:relative}
+.vid .thumb::before{content:"";width:0;height:0;border-left:22px solid var(--accent);border-top:13px solid transparent;border-bottom:13px solid transparent;margin-left:6px}
+.vid .thumb::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 60%,rgba(255,90,31,.12))}
+.vid b{font-size:15px;font-weight:700}
+.vid span{font-family:var(--util);letter-spacing:.18em;font-size:12px;color:var(--fg-dim);text-transform:uppercase}
+.goods{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center;background:var(--accent);color:#0b0a09;padding:36px;min-width:0}
+.goods h2{font-family:var(--display);font-size:clamp(40px,7vw,72px);letter-spacing:.04em;text-transform:uppercase}
+.goods p{margin:8px 0 0;font-weight:500}
+.goods .btn{border-color:#0b0a09;color:#0b0a09}
+.goods .btn:hover{background:#0b0a09;color:var(--accent)}
+@media(max-width:640px){.goods{grid-template-columns:1fr}}
+
+/* profile / contact */
+.profile{display:grid;grid-template-columns:1.2fr 1fr;gap:40px}
+.profile p{margin:0 0 1em;max-width:62ch}
+.facts{display:grid;gap:0;border-top:1px solid var(--line);align-self:start}
+.facts div{display:grid;grid-template-columns:120px 1fr;gap:14px;padding:12px 0;border-bottom:1px solid var(--line);font-size:14px}
+.facts dt{font-family:var(--util);letter-spacing:.2em;text-transform:uppercase;color:var(--fg-dim);font-size:12px;margin:0}
+.facts dd{margin:0;min-width:0}
+@media(max-width:800px){.profile{grid-template-columns:1fr}}
+.contact{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+.contact .box{background:var(--bg-3);border:1px solid var(--line);padding:26px;display:grid;gap:10px;min-width:0}
+.contact h3{font-family:var(--util);letter-spacing:.24em;text-transform:uppercase;font-size:14px;color:var(--accent)}
+.contact p{margin:0;font-size:14px;color:var(--fg-dim)}
+.mail{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-family:var(--util);font-size:19px;letter-spacing:.06em;user-select:all}
+.copy{font:600 12px var(--util);letter-spacing:.18em;text-transform:uppercase;border:1px solid var(--line);background:transparent;color:var(--fg-dim);padding:5px 10px;cursor:pointer}
+.copy:hover{border-color:var(--accent);color:var(--accent)}
+@media(max-width:720px){.contact{grid-template-columns:1fr}}
+
+/* footer */
+footer{padding-block:48px;background:#000}
+footer .wrap{display:grid;gap:22px}
+.social{display:flex;gap:20px;flex-wrap:wrap;list-style:none;margin:0;padding:0;font-family:var(--util);letter-spacing:.2em;text-transform:uppercase;font-size:14px}
+.social a{text-decoration:none;color:var(--fg-dim)}
+.social a:hover{color:var(--accent)}
+.foot-brand{font-family:var(--display);font-size:56px;letter-spacing:.06em;line-height:1}
+.foot-brand span{color:var(--accent)}
+footer small{color:var(--fg-dim);font-family:var(--util);letter-spacing:.1em;font-size:13px}
+
+@media(prefers-reduced-motion:reduce){.marquee div{animation:none;padding-left:0}html{scroll-behavior:auto}}
+</style>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top">ZIYO<span>LA</span></a>
+    <ul class="menu">
+      <li><a href="#news">News</a></li>
+      <li><a href="#live">Live</a></li>
+      <li><a href="#disco">Discography</a></li>
+      <li><a href="#member">Member</a></li>
+      <li><a href="#video">Video</a></li>
+      <li><a href="#goods">Goods</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</header>
+
+<section class="hero" id="top">
+  <div class="stage">
+  <div class="photo" role="img" aria-label="ZIYOLA — MAHO, 将, Bucchi"></div>
+  <div class="dim"></div>
+  <canvas id="gl" aria-hidden="true"></canvas>
+  <button class="sound" id="sound" type="button" aria-pressed="false"><i></i><span>Sound off</span></button>
+  <div class="wrap">
+    <div class="kicker">Loud Rock Band / Osaka, Japan / 新体制準備中</div>
+    <h1 class="logo"><img id="logo" src="assets/logo.png" alt="ZIYOLA"></h1>
+    <div class="sub">
+      <p>大阪発ラウドロックバンド ZIYOLA（ジオラ）オフィシャルサイト。Vo.MAHO を迎えた新体制で始動。</p>
+      <div class="tag">Vo.MAHO / Gt.将 / Ba.Bucchi — since 2022</div>
+    </div>
+    <div class="cta">
+      <a class="btn solid" href="https://www.youtube.com/watch?v=EoWnbLm7fxk" target="_blank" rel="noopener">Watch「RE:bellion」</a>
+      <a class="btn" href="#disco">Listen</a>
+    </div>
+    <div class="tap"><b>Tap</b> to resonate</div>
+  </div>
+  <div class="hint" id="hint">Scroll</div>
+  </div>
+</section>
+<div class="marquee" aria-hidden="true"><div>NEW VOCAL MAHO JOINED &nbsp;///&nbsp; 3rd SINGLE「RE:bellion」NOW STREAMING &nbsp;///&nbsp; NEW VOCAL MAHO JOINED &nbsp;///&nbsp; 3rd SINGLE「RE:bellion」NOW STREAMING &nbsp;///&nbsp;</div></div>
+
+<section class="sec" id="news">
+  <div class="wrap">
+    <div class="sec-head"><h2>News</h2><span class="jp">最新情報</span></div>
+    <ul class="news">
+      <li><time datetime="2026-10-26">2026.10.26</time><span class="chip">Info</span><a href="#member">新ボーカル MAHO 加入。Vo.MAHO / Gt.将 / Ba.Bucchi の3人体制で再始動します。</a></li>
+      <li><time datetime="2025-01-12">2025.01.12</time><span class="chip">Release</span><a href="https://linkco.re/zR56nT2U" target="_blank" rel="noopener">3rd Single「RE:bellion」各配信サイトにてリリース。</a></li>
+      <li><time datetime="2025-01-07">2025.01.07</time><span class="chip">Media</span><a href="https://www.youtube.com/watch?v=EoWnbLm7fxk" target="_blank" rel="noopener">「RE:bellion」Music Video 公開（バンド初のMV）。</a></li>
+      <li><time datetime="2023-08-01">2023.08.01</time><span class="chip">Release</span><a href="#disco">1st Album「NO FATE」リリース。</a></li>
+    </ul>
+  </div>
+</section>
+
+<section class="sec" id="live">
+  <div class="wrap">
+    <div class="sec-head"><h2>Live</h2><span class="jp">ライブスケジュール</span></div>
+    <div class="live">
+      <article class="gig">
+        <div class="date">TBA<small>Coming soon</small></div>
+        <div class="info">
+          <h3>新体制 初ライブ — 日程・会場は決定次第発表</h3>
+          <p>最新のライブ情報は公式X（@ZIYOLA_official）にて告知します。</p>
+          <p class="meta">出演依頼は CONTACT へ</p>
+        </div>
+        <div class="act"><a class="btn" href="https://x.com/ZIYOLA_official" target="_blank" rel="noopener">Official X</a></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="disco">
+  <div class="wrap">
+    <div class="sec-head"><h2>Discography</h2><span class="jp">音源</span></div>
+    <div class="disco">
+      <article class="rec">
+        <div class="cover"><img src="assets/cover-rebellion.jpg" alt="RE:bellion ジャケット"></div>
+        <div class="type">3rd Single / 2025.01.12</div>
+        <h3>RE:bellion</h3>
+        <ol class="tracks"><li>RE:bellion</li></ol>
+        <div class="links"><a href="https://music.apple.com/jp/album/re-bellion-single/1789937735" target="_blank" rel="noopener">Apple Music</a><a href="https://linkco.re/zR56nT2U" target="_blank" rel="noopener">All Services</a><a href="https://www.youtube.com/watch?v=EoWnbLm7fxk" target="_blank" rel="noopener">MV</a></div>
+      </article>
+      <article class="rec">
+        <div class="cover"><img src="assets/cover-nofate.jpg" alt="NO FATE ジャケット" loading="lazy"></div>
+        <div class="type">1st Album / 2023.08.01</div>
+        <h3>NO FATE</h3>
+        <ol class="tracks"><li>ANEMONE</li><li>Ruler</li><li>DILEMMA</li><li>冥海</li><li>月海</li><li>L.U.C.I.F.E.R</li><li>correct</li></ol>
+        <div class="links"><a href="https://vk.gy/releases/ziyola/" target="_blank" rel="noopener">Release Info</a></div>
+      </article>
+      <article class="rec">
+        <div class="cover"><img src="assets/cover-tsukiumi.jpg" alt="月海 ジャケット" loading="lazy"></div>
+        <div class="type">2nd Single / 2022.06.29</div>
+        <h3>月海</h3>
+        <ol class="tracks"><li>月海</li><li>冥海</li><li>correct</li></ol>
+        <div class="links"><a href="https://music.apple.com/jp/album/%E6%9C%88%E6%B5%B7-single/1631807057" target="_blank" rel="noopener">Apple Music</a><a href="https://open.spotify.com/artist/7pkDwJHq6KzD7Vg4l7g04T" target="_blank" rel="noopener">Spotify</a><a href="https://linkco.re/yadN2FUa" target="_blank" rel="noopener">All Services</a></div>
+      </article>
+      <article class="rec">
+        <div class="cover"><img src="assets/cover-kyoumei.jpg" alt="共鳴 ジャケット" loading="lazy"></div>
+        <div class="type">1st Single / 2022.01.07</div>
+        <h3>共鳴</h3>
+        <ol class="tracks"><li>共鳴</li></ol>
+        <div class="links"><a href="https://www.tunecore.co.jp/artists/ZIYOLA-108" target="_blank" rel="noopener">TuneCore</a></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="member">
+  <div class="wrap">
+    <div class="sec-head"><h2>Member</h2><span class="jp">メンバー</span></div>
+    <div class="members">
+      <article class="mem">
+        <div class="photo"><span>VO</span></div>
+        <div class="body">
+          <div class="part">Vocal</div>
+          <h3>MAHO</h3>
+          <div class="en">New Member</div>
+        </div>
+      </article>
+      <article class="mem">
+        <div class="photo"><span>GT</span></div>
+        <div class="body">
+          <div class="part">Guitar</div>
+          <h3>将</h3>
+          <div class="en">Sho</div>
+          <div class="sns"><a href="https://x.com/ZIYOLA_SHO" target="_blank" rel="noopener">X</a><a href="https://www.instagram.com/ziyola_sho" target="_blank" rel="noopener">Instagram</a></div>
+        </div>
+      </article>
+      <article class="mem">
+        <div class="photo"><span>BA</span></div>
+        <div class="body">
+          <div class="part">Bass</div>
+          <h3>Bucchi</h3>
+          <div class="en">Bucchi</div>
+          <div class="sns"><a href="https://x.com/ZIYOLA_bucchi" target="_blank" rel="noopener">X</a><a href="https://www.instagram.com/ziyola_bucchi" target="_blank" rel="noopener">Instagram</a></div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="video">
+  <div class="wrap">
+    <div class="sec-head"><h2>Video</h2><span class="jp">映像</span></div>
+    <div class="videos">
+      <a class="vid" href="https://www.youtube.com/watch?v=EoWnbLm7fxk" target="_blank" rel="noopener"><div class="thumb"></div><b>RE:bellion / ZIYOLA【Music Video】</b><span>2025.01.07 — ZIYOLA official</span></a>
+      <a class="vid" href="https://www.youtube.com/watch?v=2E_ur-UspVY" target="_blank" rel="noopener"><div class="thumb"></div><b>correct / ZIYOLA【Live Lyric Video】</b><span>ZIYOLA official</span></a>
+      <a class="vid" href="https://www.youtube.com/channel/UCThuoJ-cnPDVBzeGMM2Jozg" target="_blank" rel="noopener"><div class="thumb"></div><b>ZIYOLA official YouTube Channel</b><span>@ziyola2022 — すべての動画はこちら</span></a>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="goods">
+  <div class="wrap">
+    <div class="goods">
+      <div>
+        <h2>Goods</h2>
+        <p>グッズはライブ会場の物販ブースにて販売。オンライン販売は準備中。</p>
+      </div>
+      <a class="btn" href="https://x.com/ZIYOLA_official" target="_blank" rel="noopener">最新情報は X へ</a>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="profile">
+  <div class="wrap">
+    <div class="sec-head"><h2>Profile</h2><span class="jp">バイオグラフィ</span></div>
+    <div class="profile">
+      <div>
+        <p>ZIYOLA（ジオラ）は大阪発のラウドロックバンド。2022年1月6日に始動。</p>
+        <p>2022年1月に1st Single「共鳴」、同年6月に2nd Single「月海」、2023年8月に1st Album「NO FATE」をリリース。2025年1月、3rd Single「RE:bellion」とバンド初のMusic Videoを発表。2026年、新ボーカル MAHO を迎え、Vo.MAHO / Gt.将 / Ba.Bucchi の3人体制で再始動する。</p>
+      </div>
+      <dl class="facts">
+        <div><dt>Formed</dt><dd>2022年1月 / 大阪</dd></div>
+        <div><dt>From</dt><dd>大阪</dd></div>
+        <div><dt>Genre</dt><dd>Loud Rock / Metalcore</dd></div>
+        <div><dt>Member</dt><dd>Vo.MAHO / Gt.将 / Ba.Bucchi</dd></div>
+        <div><dt>Label</dt><dd>Self-released（TuneCore Japan）</dd></div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="contact">
+  <div class="wrap">
+    <div class="sec-head"><h2>Contact</h2><span class="jp">お問い合わせ</span></div>
+    <div class="contact">
+      <div class="box">
+        <h3>Booking / Press</h3>
+        <p>ライブ出演依頼、取材、タイアップ等のお問い合わせは公式XのDMまで。</p>
+        <div class="mail"><span id="mail1">@ZIYOLA_official</span><button class="copy" type="button" data-copy="mail1">Copy</button></div>
+      </div>
+      <div class="box">
+        <h3>Ticket</h3>
+        <p>ライブのチケット取り置きは各メンバーのX DMまたは公式Xまで。公演日と枚数を記載してください。</p>
+        <div class="mail"><span id="mail2">@ZIYOLA_official</span><button class="copy" type="button" data-copy="mail2">Copy</button></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-brand">ZIYO<span>LA</span></div>
+    <ul class="social">
+      <li><a href="https://x.com/ZIYOLA_official" target="_blank" rel="noopener">X</a></li>
+      <li><a href="https://www.instagram.com/ziyola__official" target="_blank" rel="noopener">Instagram</a></li>
+      <li><a href="https://www.youtube.com/channel/UCThuoJ-cnPDVBzeGMM2Jozg" target="_blank" rel="noopener">YouTube</a></li>
+      <li><a href="https://open.spotify.com/artist/7pkDwJHq6KzD7Vg4l7g04T" target="_blank" rel="noopener">Spotify</a></li>
+      <li><a href="https://music.apple.com/jp/artist/ziyola/1602905165" target="_blank" rel="noopener">Apple Music</a></li>
+      <li><a href="https://www.tunecore.co.jp/artists/ZIYOLA-108" target="_blank" rel="noopener">TuneCore</a></li>
+    </ul>
+    <small>© 2026 ZIYOLA. All rights reserved.</small>
+  </div>
+</footer>
+
+<script>
+/* Hero「共鳴」: each tap sends a shockwave through the photo (WebGL), the logo splits RGB, Sound on = kick + palm-muted chug synthesized in the browser. Without WebGL it falls back to the plain photo + .dim fade. */
+(function(){
+  var stage=document.querySelector('.hero .stage'),hero=stage.parentNode,dim=document.querySelector('.hero .dim'),wrap=document.querySelector('.hero .wrap'),hint=document.getElementById('hint'),logoEl=document.getElementById('logo'),cv=document.getElementById('gl');
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  document.querySelectorAll('.copy').forEach(function(b){
+    b.addEventListener('click',function(){
+      var el=document.getElementById(b.dataset.copy),t=el.textContent;
+      var done=function(){b.textContent='Copied';setTimeout(function(){b.textContent='Copy'},1500)};
+      var sel=function(){var r=document.createRange();r.selectNodeContents(el);var s=getSelection();s.removeAllRanges();s.addRange(r)};
+      try{navigator.clipboard.writeText(t).then(done,sel)}catch(e){sel()}
+    });
+  });
+  if(reduce)return;
+
+  /* ---------- scroll reveal (runs with or without WebGL) ---------- */
+  var prog=0;
+  function onScroll(){
+    var y=scrollY,vh=innerHeight,range=Math.max(1,hero.offsetHeight-vh);
+    var t=Math.min(1,Math.max(0,y/(range*.75)));var e=t*t*(3-2*t);prog=e;
+    dim.style.opacity=e*.95;
+    wrap.style.opacity=e;wrap.style.transform='translateY('+(40*(1-e))+'px)';
+    hint.style.opacity=1-Math.min(1,y/(vh*.25));
+  }
+  addEventListener('scroll',onScroll,{passive:true});addEventListener('resize',onScroll);onScroll();
+
+  /* ---------- sound: kick + palm-muted E5 chug, synthesized ---------- */
+  var ac=null,master=null,shaper=null,soundOn=false,sbtn=document.getElementById('sound');
+  function curve(k){var n=1024,c=new Float32Array(n);for(var i=0;i<n;i++){var x=i*2/n-1;c[i]=(1+k)*x/(1+k*Math.abs(x))}return c}
+  sbtn.addEventListener('click',function(e){
+    e.stopPropagation();
+    soundOn=!soundOn;
+    if(soundOn&&!ac){
+      try{
+        ac=new (window.AudioContext||window.webkitAudioContext)();
+        var comp=ac.createDynamicsCompressor();comp.threshold.value=-14;comp.ratio.value=6;
+        master=ac.createGain();master.gain.value=.7;master.connect(comp);comp.connect(ac.destination);
+        shaper=ac.createWaveShaper();shaper.curve=curve(60);shaper.oversample='4x';
+        var lp=ac.createBiquadFilter();lp.type='lowpass';lp.frequency.value=2400;shaper.connect(lp);lp.connect(master);
+      }catch(err){soundOn=false}
+    }
+    if(ac&&ac.state==='suspended')ac.resume();
+    sbtn.setAttribute('aria-pressed',soundOn);
+    sbtn.querySelector('span').textContent=soundOn?'Sound on':'Sound off';
+  });
+  function playHit(amp){
+    if(!soundOn||!ac)return;
+    var t=ac.currentTime,o=ac.createOscillator(),g=ac.createGain();
+    o.type='sine';o.frequency.setValueAtTime(160,t);o.frequency.exponentialRampToValueAtTime(40,t+.3);
+    g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(1.1*amp,t+.004);g.gain.exponentialRampToValueAtTime(.0001,t+.45);
+    o.connect(g);g.connect(master);o.start(t);o.stop(t+.5);
+    if(amp<.5)return;
+    // low E + B power chord, palm muted
+    var cg=ac.createGain();cg.gain.setValueAtTime(.0001,t);cg.gain.exponentialRampToValueAtTime(.35*amp,t+.006);cg.gain.exponentialRampToValueAtTime(.0001,t+.22);
+    cg.connect(shaper);
+    [41.2,61.7,82.4].forEach(function(f,i){var s=ac.createOscillator();s.type='sawtooth';s.frequency.value=f;s.detune.value=(i-1)*6;s.connect(cg);s.start(t);s.stop(t+.25)});
+  }
+
+  /* ---------- WebGL ---------- */
+  var gl=cv.getContext('webgl',{antialias:false,premultipliedAlpha:false});
+  if(!gl)return fallback();
+  var VS='attribute vec2 a;void main(){gl_Position=vec4(a,0.,1.);}';
+  var FS=[
+  'precision highp float;',
+  'uniform vec2 uRes;uniform float uTime,uProg,uKick,uDpr,uReach;uniform vec4 uCover,uLogo;uniform sampler2D uPhoto,uLogoT;uniform vec4 uHits[8];',
+  'const vec3 BG=vec3(.043,.039,.035);const vec3 ACC=vec3(1.,.353,.122);',
+  'float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}',
+  'vec3 ph(vec2 p){return texture2D(uPhoto,clamp((p-uCover.xy)/uCover.zw,0.,1.)).rgb;}',
+  'float lg(vec2 p){vec2 u=(p-uLogo.xy)/uLogo.zw;if(u.x<0.||u.y<0.||u.x>1.||u.y>1.)return 0.;return texture2D(uLogoT,u).a;}',
+  'void main(){',
+  ' vec2 p=vec2(gl_FragCoord.x,uRes.y-gl_FragCoord.y);vec2 c=uRes*.5;float m=min(uRes.x,uRes.y);',
+  ' p=c+(p-c)*(1.-.022*uKick);',
+  ' vec2 off=vec2(0.),ca=vec2(0.);float ring=0.;',
+  ' for(int i=0;i<8;i++){vec4 h=uHits[i];float age=uTime-h.z;if(h.w<=0.||age<0.||age>1.8)continue;',
+  '  vec2 d=(p-h.xy)*vec2(1.,2.2);float dist=length(d);vec2 dir=normalize(p-h.xy+.001);',
+  '  float rad=age*uReach*.85;float w=uReach*(.1+.08*age);float k=(dist-rad)/w;float fade=pow(1.-age/1.8,2.)*h.w*smoothstep(uReach,uReach*.3,rad);',
+  '  float g=exp(-k*k);off+=dir*(-k*g)*uReach*.11*fade;ca+=dir*g*fade;ring+=g*fade;}',
+  ' vec2 q=p+off;vec2 cav=ca*uReach*.03+(p-c)/m*uDpr*(1.5+3.*uKick);',
+  ' vec3 col=vec3(ph(q+cav).r,ph(q).g,ph(q-cav).b);',
+  ' float y=p.y/uRes.y;float dA=mix(.2,.78,smoothstep(0.,.7,y));dA=mix(dA,1.,smoothstep(.72,1.,y));',
+  ' col=mix(col,BG,dA*uProg*.95);',
+  ' col*=1.+ring*.55;col+=ACC*ring*.22;',
+  ' vec2 lq=q+off*.6;vec2 lc=cav*1.3+vec2(uKick*7.*uDpr,0.);',
+  ' vec3 la=vec3(lg(lq+lc),lg(lq),lg(lq-lc));',
+  ' float gsum=0.;for(int j=0;j<12;j++){float an=float(j)*.5236;float rr=(mod(float(j),3.)+1.)*9.*uDpr;gsum+=lg(lq+vec2(cos(an),sin(an))*rr*(1.+uKick));}',
+  ' col+=ACC*pow(gsum/12.,1.5)*uProg*(.35+uKick*1.1);',
+  ' col=col*(1.-la*uProg)+la*uProg*vec3(.97,.95,.92);',
+  ' col+=(hash(floor(p/(2.*uDpr))+fract(uTime*7.)*91.)-.5)*.07;',
+  ' vec2 v=(p-c)/uRes;col*=1.-.55*dot(v,v);',
+  ' gl_FragColor=vec4(col,1.);}'
+  ].join('\n');
+  function sh(t,s){var o=gl.createShader(t);gl.shaderSource(o,s);gl.compileShader(o);if(!gl.getShaderParameter(o,gl.COMPILE_STATUS))throw gl.getShaderInfoLog(o);return o}
+  var pr;
+  try{pr=gl.createProgram();gl.attachShader(pr,sh(gl.VERTEX_SHADER,VS));gl.attachShader(pr,sh(gl.FRAGMENT_SHADER,FS));gl.linkProgram(pr);if(!gl.getProgramParameter(pr,gl.LINK_STATUS))throw 'link'}catch(e){return fallback()}
+  gl.useProgram(pr);
+  var buf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buf);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW);
+  var aLoc=gl.getAttribLocation(pr,'a');gl.enableVertexAttribArray(aLoc);gl.vertexAttribPointer(aLoc,2,gl.FLOAT,false,0,0);
+  var U={};['uRes','uTime','uProg','uKick','uDpr','uReach','uCover','uLogo','uPhoto','uLogoT','uHits'].forEach(function(n){U[n]=gl.getUniformLocation(pr,n)});
+  function tex(unit,img){var t=gl.createTexture();gl.activeTexture(gl.TEXTURE0+unit);gl.bindTexture(gl.TEXTURE_2D,t);
+    gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
+    gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,img);}
+  function load(src){return new Promise(function(res,rej){var i=new Image();i.onload=function(){res(i)};i.onerror=rej;i.src=src})}
+  var photo=null,dpr=1,W=0,H=0;
+  Promise.all([load('assets/hero.jpg'),load('assets/logo.png')]).then(function(r){
+    try{tex(0,r[0]);tex(1,r[1])}catch(e){return fallback()}
+    photo=r[0];
+    gl.uniform1i(U.uPhoto,0);gl.uniform1i(U.uLogoT,1);
+    document.documentElement.classList.add('gl');
+    resize();loop();
+  },fallback);
+  function fallback(){document.documentElement.classList.remove('gl');document.documentElement.classList.add('no-gl');cv.style.display='none'}
+  function resize(){
+    if(!photo)return;
+    dpr=Math.min(devicePixelRatio||1,innerWidth<720?1.5:2);
+    W=Math.round(stage.clientWidth*dpr);H=Math.round(stage.clientHeight*dpr);
+    cv.width=W;cv.height=H;gl.viewport(0,0,W,H);
+  }
+  addEventListener('resize',resize);
+
+  /* ---------- hits ---------- */
+  var hits=new Float32Array(32),hi=0,t0=performance.now();
+  function now(){return (performance.now()-t0)/1000}
+  function hit(x,y,amp){hits.set([x*dpr,y*dpr,now(),amp],hi*4);hi=(hi+1)%8;playHit(amp)}
+  // ripples always start from the logo centre, and only once the logo is up
+  var LIVE=.8,lastDrag=0,down=false;
+  function logoHit(amp){var sr=stage.getBoundingClientRect(),lr=logoEl.getBoundingClientRect();hit(lr.left-sr.left+lr.width/2,lr.top-sr.top+lr.height/2,amp)}
+  stage.addEventListener('pointerdown',function(e){
+    if(!photo||prog<LIVE||e.target.closest('a,button'))return;
+    down=true;logoHit(1);lastDrag=performance.now();
+  });
+  stage.addEventListener('pointermove',function(e){
+    if(!down||prog<LIVE||e.pointerType==='touch'||performance.now()-lastDrag<110)return;lastDrag=performance.now();
+    logoHit(.45);
+  });
+  addEventListener('pointerup',function(){down=false});addEventListener('pointercancel',function(){down=false});
+
+  /* ---------- render loop (paused while the hero is off screen) ---------- */
+  var armed=true,lastPulse=0,visible=true,running=false;
+  function loop(){if(!running&&photo){running=true;requestAnimationFrame(frame)}}
+  new IntersectionObserver(function(es){visible=es[0].isIntersecting;if(visible)loop()}).observe(hero);
+  function frame(){
+    if(!visible){running=false;return}
+    var e=prog,sr=stage.getBoundingClientRect(),lr=logoEl.getBoundingClientRect(),tt=now();
+    var lx=lr.left-sr.left+lr.width/2,ly=lr.top-sr.top+lr.height/2;
+    // the logo lands with a big hit, then keeps a heartbeat
+    if(e>LIVE&&armed){armed=false;lastPulse=tt;hit(lx,ly,1.4)}
+    if(e<.3)armed=true;
+    if(e>LIVE&&tt-lastPulse>2){lastPulse=tt;hit(lx,ly,.28)}
+    var kick=0;for(var i=0;i<8;i++){var a=tt-hits[i*4+2];if(hits[i*4+3]>0&&a>=0&&a<1)kick=Math.max(kick,hits[i*4+3]*Math.exp(-a*7))}
+    gl.uniform2f(U.uRes,W,H);gl.uniform1f(U.uTime,tt);gl.uniform1f(U.uProg,e);gl.uniform1f(U.uKick,Math.min(kick,1.4));gl.uniform1f(U.uDpr,dpr);gl.uniform1f(U.uReach,lr.width*dpr*.62);
+    var s=Math.max(W/photo.width,H/photo.height),dw=photo.width*s,dh=photo.height*s,fx=innerWidth<720?.62:.5,fy=innerWidth<720?.4:.38;
+    gl.uniform4f(U.uCover,(W-dw)*fx,(H-dh)*fy,dw,dh);
+    gl.uniform4f(U.uLogo,(lr.left-sr.left)*dpr,(lr.top-sr.top)*dpr,lr.width*dpr,lr.height*dpr);
+    gl.uniform4fv(U.uHits,hits);
+    gl.drawArrays(gl.TRIANGLES,0,3);
+    requestAnimationFrame(frame);
+  }
+})();
+</script>
