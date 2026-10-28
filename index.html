@@ -138,6 +138,7 @@ h1,h2,h3{margin:0;text-wrap:balance;line-height:1}
 .rstatus.err{border-left:3px solid #ff8a6a;padding:10px 14px;background:rgba(255,138,106,.08);display:grid;gap:10px}
 .rstatus pre{margin:0;white-space:pre-wrap;font:14px/1.7 var(--body);background:var(--bg);border:1px solid var(--line);padding:10px 12px;user-select:all}
 .rstatus .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.rstatus .note{font-size:13px;color:var(--fg-dim)}
 
 /* disco */
 .disco{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px}
@@ -282,7 +283,7 @@ footer small{color:var(--fg-dim);font-family:var(--util);letter-spacing:.1em;fon
       <div class="reserve-head">
         <span class="kicker">Ticket</span>
         <h3>Reserve</h3>
-        <p>チケットの取り置きはこちらから。送信内容はメンバーに届きます。</p>
+        <p>入力した内容で、公式X（@ZIYOLA_official）へのDMを作ります。Xにログインした状態でご利用ください。</p>
       </div>
       <form class="rform" id="rform" novalidate>
         <div class="field">
@@ -304,7 +305,7 @@ footer small{color:var(--fg-dim);font-family:var(--util);letter-spacing:.1em;fon
           </select>
         </div>
         <div class="hp" aria-hidden="true"><label for="r-website">Website</label><input id="r-website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
-        <button class="btn solid" type="submit" id="r-submit">取り置きを申し込む</button>
+        <button class="btn solid" type="submit" id="r-submit">DMの文面を作る</button>
         <div class="rstatus" id="rstatus" role="status" aria-live="polite"></div>
       </form>
     </div>
@@ -434,7 +435,7 @@ footer small{color:var(--fg-dim);font-family:var(--util);letter-spacing:.1em;fon
       </div>
       <div class="box">
         <h3>Ticket</h3>
-        <p>ライブのチケット取り置きは <a href="#reserve">LIVE 欄の取り置きフォーム</a> から。フォームが使えない場合は、各メンバーのX DMまたは公式Xまで公演日と枚数を記載してください。</p>
+        <p>ライブのチケット取り置きは <a href="#reserve">LIVE 欄の取り置きフォーム</a> で文面を作り、公式XのDMで送ってください。各メンバーのX DMでも受け付けます。</p>
         <div class="mail"><span id="mail2">@ZIYOLA_official</span><button class="copy" type="button" data-copy="mail2">Copy</button></div>
       </div>
     </div>
@@ -470,46 +471,37 @@ footer small{color:var(--fg-dim);font-family:var(--util);letter-spacing:.1em;fon
       try{navigator.clipboard.writeText(t).then(done,sel)}catch(e){sel()}
     });
   });
-  /* ---------- ticket hold form → /api/reserve (Vercel function → LINE) ---------- */
+  /* ---------- ticket hold form → prefilled X DM to @ZIYOLA_official ---------- */
+  // Numeric user ID of @ZIYOLA_official. When set, the button opens a DM with the text already filled in;
+  // when empty, the visitor copies the text and sends it from the profile's message button.
+  var X_DM_ID='';
   (function(){
     var form=document.getElementById('rform');if(!form)return;
-    var st=document.getElementById('rstatus'),btn=document.getElementById('r-submit'),dateEl=document.getElementById('r-date');
+    var st=document.getElementById('rstatus'),dateEl=document.getElementById('r-date');
     var d=new Date();dateEl.min=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
     var WD=['日','月','火','水','木','金','土'];
     function fmt(v){var p=v.split('-');var w=new Date(+p[0],p[1]-1,+p[2]).getDay();return p.join('.')+'（'+WD[w]+'）'}
     function el(tag,cls,text){var e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e}
-    function show(kind,nodes){st.className='rstatus '+kind;st.textContent='';nodes.forEach(function(n){st.appendChild(typeof n==='string'?el('p',null,n):n)});st.querySelectorAll('p').forEach(function(p){p.style.margin='0'})}
-    form.addEventListener('input',function(e){if(e.target.getAttribute('aria-invalid')==='true'&&e.target.checkValidity())e.target.removeAttribute('aria-invalid')});
+    function show(kind,nodes){st.className='rstatus '+kind;st.textContent='';nodes.forEach(function(n){var c=typeof n==='string'?el('p',null,n):n;if(c.tagName==='P')c.style.margin='0';st.appendChild(c)})}
+    form.addEventListener('input',function(e){if(e.target.getAttribute('aria-invalid')==='true'&&e.target.value!==''&&e.target.checkValidity())e.target.removeAttribute('aria-invalid')});
     form.addEventListener('submit',function(e){
       e.preventDefault();
       var bad=null;
       ['r-name','r-date','r-venue','r-count'].forEach(function(id){var f=document.getElementById(id);if(f.tagName==='INPUT'&&f.type==='text')f.value=f.value.trim();var ok=f.value!==''&&f.checkValidity();if(!ok){f.setAttribute('aria-invalid','true');bad=bad||f}else f.removeAttribute('aria-invalid')});
       if(bad){show('err',['未入力の項目があります。赤枠の項目を確認してください。']);bad.focus();return}
       var v=function(id){return document.getElementById(id).value};
-      var data={name:v('r-name'),date:v('r-date'),venue:v('r-venue'),count:+v('r-count'),website:v('r-website')};
-      var text='【取り置き】\n取り置き名：'+data.name+'\n公演日：'+fmt(data.date)+'\n会場：'+data.venue+'\n枚数：'+data.count+'枚';
-      btn.disabled=true;btn.textContent='送信中…';
-      fetch('/api/reserve',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)})
-        .then(function(r){return r.json().catch(function(){return {}}).then(function(j){return {status:r.status,j:j}})})
-        .then(function(r){
-          if(r.status===200&&r.j.ok){
-            show('ok',['取り置きを送信しました。','当日は受付で「'+data.name+'」とお伝えください。（'+fmt(data.date)+' '+data.venue+' / '+data.count+'枚）']);
-            form.reset();
-          }else if(r.status===400&&r.j.error){show('err',[r.j.error])}
-          else fallback(text);
-        },function(){fallback(text)})
-        .then(function(){btn.disabled=false;btn.textContent='取り置きを申し込む'});
-    });
-    function fallback(text){
-      var pre=el('pre',null,text),row=el('div','row'),cp=el('button','copy','Copy'),x=el('a','btn','公式Xを開く');
-      cp.type='button';x.href='https://x.com/ZIYOLA_official';x.target='_blank';x.rel='noopener';
+      var text='【取り置き】\n取り置き名：'+v('r-name')+'\n公演日：'+fmt(v('r-date'))+'\n会場：'+v('r-venue')+'\n枚数：'+v('r-count')+'枚';
+      var pre=el('pre',null,text),row=el('div','row'),cp=el('button','copy','Copy'),x=el('a','btn solid',X_DM_ID?'XのDMを開いて送信':'公式Xを開く');
+      cp.type='button';x.target='_blank';x.rel='noopener';
+      x.href=X_DM_ID?'https://x.com/messages/compose?recipient_id='+X_DM_ID+'&text='+encodeURIComponent(text):'https://x.com/ZIYOLA_official';
       cp.addEventListener('click',function(){
         var sel=function(){var r=document.createRange();r.selectNodeContents(pre);var s=getSelection();s.removeAllRanges();s.addRange(r)};
         try{navigator.clipboard.writeText(text).then(function(){cp.textContent='Copied';setTimeout(function(){cp.textContent='Copy'},1500)},sel)}catch(err){sel()}
       });
-      row.appendChild(cp);row.appendChild(x);
-      show('err',['送信できませんでした。お手数ですが、下の文面を公式XのDMに送ってください。',pre,row]);
-    }
+      row.appendChild(x);row.appendChild(cp);
+      show('ok',[X_DM_ID?'まだ送信されていません。下のボタンでXのDMを開き、そのまま送信してください。':'まだ送信されていません。文面をコピーし、公式Xのプロフィールのメッセージボタンから送信してください。',pre,row,el('p','note','取り置きはDMの送信をもって受付となります。当日は受付で「'+v('r-name')+'」とお伝えください。')]);
+      x.focus();
+    });
   })();
 
   if(reduce)return;
