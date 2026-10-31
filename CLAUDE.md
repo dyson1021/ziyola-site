@@ -17,7 +17,10 @@
 - assets/cover-kyoumei.jpg — 共鳴 ジャケット（447px）
 
 ## デザイン
-- 単一ダークテーマ。トークンは `:root` に集約（--bg / --fg / --accent #ff5a1f など）。
+- 単一ダークテーマ。**赤×青のクール系**（2026.10 ユーザー指示でオレンジから変更）。トークンは `:root` に集約。
+  - 土台は青みの黒 --bg #06070c / --fg #e8ecf5。赤 --accent #ff2b4a が主役（ボタン・キッカー・チップ）、青 --blue #3a74ff / --steel #86a4ff が受け（リンク・日本語見出し・ホバー）。
+  - 赤→青のグラデ --duo をマーキー・GOODS・ライブ枠の線・フッター上線に使う。rgba 用に --bg-rgb / --red-rgb / --blue-rgb。フォームのエラーは赤と区別するため --warn（琥珀）。
+  - ヒーローのシェーダーも BG/ACC(赤)/BLU(青) に変更。ロゴの光と波紋は左が赤・右が青。
 - フォント: Anton（見出し）/ Noto Sans JP（本文）/ Barlow Condensed（ラベル）— Google Fonts。
 - ヒーロー: `.hero` 190vh、`.stage` sticky 100vh。ページを開くとアー写のみ → スクロールで `.dim` が暗転し `.wrap`（ロゴ・コピー・CTA）が下からフェードイン（JS onScroll）。prefers-reduced-motion 時は静的表示。
 - ヒーロー演出 = 提案A「共鳴」（2026.10 採用）。`#gl` の WebGL シェーダーが写真・暗転・ロゴ・グレインをまとめて描画（DOM のロゴ img は位置合わせ用に透明）。
