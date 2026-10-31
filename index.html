@@ -45,6 +45,13 @@ h1,h2,h3{margin:0;text-wrap:balance;line-height:1}
 .menu a{text-decoration:none;color:var(--fg-dim);transition:color .2s}
 .menu a:hover{color:var(--steel)}
 @media(max-width:720px){.menu{display:none}}
+@media(max-width:1020px){.menu{gap:14px;font-size:14px;letter-spacing:.12em}}
+.navr{display:flex;align-items:center;gap:20px;min-width:0}
+.sns-nav{display:flex;gap:4px;list-style:none;margin:0;padding:0 0 0 14px;border-left:1px solid var(--line)}
+.sns-nav a{display:grid;place-items:center;width:38px;height:38px;color:var(--fg-dim);transition:color .2s}
+.sns-nav a:hover{color:var(--fg)}
+.sns-nav svg{width:19px;height:19px;display:block}
+@media(max-width:720px){.sns-nav{border-left:0;padding-left:0}}
 
 /* hero */
 .hero{position:relative;border-bottom:1px solid var(--line);background:var(--bg);height:190vh}
@@ -54,11 +61,6 @@ h1,h2,h3{margin:0;text-wrap:balance;line-height:1}
 .hero .dim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(var(--bg-rgb),.2),rgba(var(--bg-rgb),.78) 70%,var(--bg));opacity:0}
 .hero canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
 .gl .hero h1.logo img{opacity:0}
-.sound{position:absolute;left:max(16px,env(safe-area-inset-left,0px));top:76px;z-index:2;font:700 12px var(--util);letter-spacing:.24em;text-transform:uppercase;color:var(--fg);background:rgba(var(--bg-rgb),.55);border:1px solid rgba(232,236,245,.35);padding:8px 12px;cursor:pointer;display:flex;align-items:center;gap:8px}
-.sound i{width:8px;height:8px;border-radius:50%;background:var(--fg-dim)}
-.sound[aria-pressed="true"]{border-color:var(--accent)}
-.sound[aria-pressed="true"] i{background:var(--accent);box-shadow:0 0 10px var(--accent)}
-.no-gl .sound{display:none}
 .hero .wrap{position:absolute;left:0;right:0;bottom:0;display:grid;gap:18px;padding-bottom:56px;opacity:0;transform:translateY(40px);justify-items:center;text-align:center}
 .hero .cta{justify-content:center}
 .hero .hint{position:absolute;left:0;right:0;bottom:calc(max(24px,env(safe-area-inset-bottom,0px)) + 72px);pointer-events:none;text-align:center;font-family:var(--util);letter-spacing:.3em;text-transform:uppercase;font-size:12px;color:var(--fg);text-shadow:0 1px 8px rgba(0,0,0,.8);animation:bob 1.8s ease-in-out infinite}
@@ -67,7 +69,7 @@ h1,h2,h3{margin:0;text-wrap:balance;line-height:1}
 .no-gl .hero .tap{display:none}
 @keyframes bob{50%{transform:translateY(6px)}}
 @media(max-width:720px){.hero .photo{background-position:62% 40%}}
-@media(prefers-reduced-motion:reduce){.hero{height:auto}.hero .stage{position:relative;height:auto;min-height:100vh}.hero .dim,.hero .wrap{opacity:1!important;transform:none!important}.hero .hint,.hero .tap,.sound,.hero canvas{display:none;animation:none}.gl .hero h1.logo img{opacity:1}}
+@media(prefers-reduced-motion:reduce){.hero{height:auto}.hero .stage{position:relative;height:auto;min-height:100vh}.hero .dim,.hero .wrap{opacity:1!important;transform:none!important}.hero .hint,.hero .tap,.hero canvas{display:none;animation:none}.gl .hero h1.logo img{opacity:1}}
 .kicker{font-family:var(--util);font-weight:600;letter-spacing:.3em;text-transform:uppercase;color:var(--accent-ink);font-size:14px}
 .hero h1{font-family:var(--display);font-size:clamp(84px,19vw,240px);letter-spacing:.02em;line-height:.86;text-transform:uppercase;
   background:linear-gradient(180deg,var(--fg) 55%,#a9b3cc);-webkit-background-clip:text;background-clip:text;color:transparent;
@@ -226,6 +228,7 @@ footer small{color:var(--fg-dim);font-family:var(--util);letter-spacing:.1em;fon
 <header class="nav">
   <div class="wrap">
     <a class="brand" href="#top">ZIYO<span>LA</span></a>
+    <div class="navr">
     <ul class="menu">
       <li><a href="#news">News</a></li>
       <li><a href="#live">Live</a></li>
@@ -235,6 +238,11 @@ footer small{color:var(--fg-dim);font-family:var(--util);letter-spacing:.1em;fon
       <li><a href="#goods">Goods</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
+    <ul class="sns-nav">
+      <li><a href="https://x.com/ZIYOLA_official" target="_blank" rel="noopener" aria-label="ZIYOLA 公式X"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a></li>
+      <li><a href="https://www.instagram.com/ziyola__official" target="_blank" rel="noopener" aria-label="ZIYOLA 公式Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"/></svg></a></li>
+    </ul>
+    </div>
   </div>
 </header>
 
@@ -243,7 +251,6 @@ footer small{color:var(--fg-dim);font-family:var(--util);letter-spacing:.1em;fon
   <div class="photo" role="img" aria-label="ZIYOLA — MAHO, 将, Bucchi"></div>
   <div class="dim"></div>
   <canvas id="gl" aria-hidden="true"></canvas>
-  <button class="sound" id="sound" type="button" aria-pressed="false"><i></i><span>Sound off</span></button>
   <div class="wrap">
     <div class="kicker">Loud Rock Band / Osaka, Japan / 新体制準備中</div>
     <h1 class="logo"><img id="logo" src="assets/logo.png" alt="ZIYOLA"></h1>
@@ -467,7 +474,7 @@ footer small{color:var(--fg-dim);font-family:var(--util);letter-spacing:.1em;fon
 </footer>
 
 <script>
-/* Hero「共鳴」: each tap sends a shockwave through the photo (WebGL), the logo splits RGB, Sound on = kick + palm-muted chug synthesized in the browser. Without WebGL it falls back to the plain photo + .dim fade. */
+/* Hero「共鳴」: each tap sends a shockwave through the photo (WebGL), the logo splits RGB. Without WebGL it falls back to the plain photo + .dim fade. */
 (function(){
   var stage=document.querySelector('.hero .stage'),hero=stage.parentNode,dim=document.querySelector('.hero .dim'),wrap=document.querySelector('.hero .wrap'),hint=document.getElementById('hint'),logoEl=document.getElementById('logo'),cv=document.getElementById('gl');
   var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -543,38 +550,6 @@ footer small{color:var(--fg-dim);font-family:var(--util);letter-spacing:.1em;fon
   }
   addEventListener('scroll',onScroll,{passive:true});addEventListener('resize',onScroll);onScroll();
 
-  /* ---------- sound: kick + palm-muted E5 chug, synthesized ---------- */
-  var ac=null,master=null,shaper=null,soundOn=false,sbtn=document.getElementById('sound');
-  function curve(k){var n=1024,c=new Float32Array(n);for(var i=0;i<n;i++){var x=i*2/n-1;c[i]=(1+k)*x/(1+k*Math.abs(x))}return c}
-  sbtn.addEventListener('click',function(e){
-    e.stopPropagation();
-    soundOn=!soundOn;
-    if(soundOn&&!ac){
-      try{
-        ac=new (window.AudioContext||window.webkitAudioContext)();
-        var comp=ac.createDynamicsCompressor();comp.threshold.value=-14;comp.ratio.value=6;
-        master=ac.createGain();master.gain.value=.7;master.connect(comp);comp.connect(ac.destination);
-        shaper=ac.createWaveShaper();shaper.curve=curve(60);shaper.oversample='4x';
-        var lp=ac.createBiquadFilter();lp.type='lowpass';lp.frequency.value=2400;shaper.connect(lp);lp.connect(master);
-      }catch(err){soundOn=false}
-    }
-    if(ac&&ac.state==='suspended')ac.resume();
-    sbtn.setAttribute('aria-pressed',soundOn);
-    sbtn.querySelector('span').textContent=soundOn?'Sound on':'Sound off';
-  });
-  function playHit(amp){
-    if(!soundOn||!ac)return;
-    var t=ac.currentTime,o=ac.createOscillator(),g=ac.createGain();
-    o.type='sine';o.frequency.setValueAtTime(160,t);o.frequency.exponentialRampToValueAtTime(40,t+.3);
-    g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(1.1*amp,t+.004);g.gain.exponentialRampToValueAtTime(.0001,t+.45);
-    o.connect(g);g.connect(master);o.start(t);o.stop(t+.5);
-    if(amp<.5)return;
-    // low E + B power chord, palm muted
-    var cg=ac.createGain();cg.gain.setValueAtTime(.0001,t);cg.gain.exponentialRampToValueAtTime(.35*amp,t+.006);cg.gain.exponentialRampToValueAtTime(.0001,t+.22);
-    cg.connect(shaper);
-    [41.2,61.7,82.4].forEach(function(f,i){var s=ac.createOscillator();s.type='sawtooth';s.frequency.value=f;s.detune.value=(i-1)*6;s.connect(cg);s.start(t);s.stop(t+.25)});
-  }
-
   /* ---------- WebGL ---------- */
   var gl=cv.getContext('webgl',{antialias:false,premultipliedAlpha:false});
   if(!gl)return fallback();
@@ -640,7 +615,7 @@ footer small{color:var(--fg-dim);font-family:var(--util);letter-spacing:.1em;fon
   /* ---------- hits ---------- */
   var hits=new Float32Array(32),hi=0,t0=performance.now();
   function now(){return (performance.now()-t0)/1000}
-  function hit(x,y,amp){hits.set([x*dpr,y*dpr,now(),amp],hi*4);hi=(hi+1)%8;playHit(amp)}
+  function hit(x,y,amp){hits.set([x*dpr,y*dpr,now(),amp],hi*4);hi=(hi+1)%8}
   // ripples always start from the logo centre, and only once the logo is up
   var LIVE=.8,lastDrag=0,down=false;
   function logoHit(amp){var sr=stage.getBoundingClientRect(),lr=logoEl.getBoundingClientRect();hit(lr.left-sr.left+lr.width/2,lr.top-sr.top+lr.height/2,amp)}
