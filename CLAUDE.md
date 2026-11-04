@@ -57,7 +57,7 @@
 ## 取り置きフォーム（LIVE 欄 `#reserve`）
 - 項目: 取り置き名 / 公演日（date）+ 会場名 / 枚数（1〜6）。過去日は選べない。隠し項目 `website` はスパム避け（入っていたら送らずに成功表示）。
 - 届け先は **バンドの Gmail（FormSubmit 経由）＋失敗時は X DM**（2026.11 ユーザー指示。LINE → X DM → スプレッドシート(Apps Script) を経て、Apps Script のエラーが多いためこれに決定。gas/ は削除済み）。
-  - index.html の `var MAIL_TO` に届け先メールアドレスを入れる。**現在は空（アドレス待ち）**。送信先は `https://formsubmit.co/ajax/<MAIL_TO>`（JSON、Accept: application/json）。
+  - index.html の `var MAIL_TO` = ziyola2022@gmail.com（2026.11 設定、ユーザー指定）。**FormSubmit の有効化はまだ（公開サイトからの初回送信で確認メールが届く）**。送信先は `https://formsubmit.co/ajax/<MAIL_TO>`（JSON、Accept: application/json）。
   - FormSubmit は最初の1通で「Activate Form」の確認メールを送るだけで、本文は届かない。確認後は届く。確認後に発行されるランダム文字列を MAIL_TO に入れるとアドレスをページに出さずに済む。
   - メールは件名「【ZIYOLA 取り置き】2026.11.20 会場 / 名前 2枚」、本文は表形式（取り置き名 / 公演日 / 会場 / 枚数）。
   - **claude.ai 版は外部への通信が止められるので送れない。メール送信が動くのは Vercel 等で公開したサイトのみ。**
