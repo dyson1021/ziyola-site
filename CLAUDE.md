@@ -56,18 +56,19 @@
 
 ## 取り置きフォーム（LIVE 欄 `#reserve`）
 - 項目: 取り置き名 / 公演日（date）+ 会場名 / 枚数（1〜6）。過去日は選べない。隠し項目 `website` はスパム避け（入っていたら送らずに成功表示）。
-- 届け先は **バンドの Gmail（FormSubmit 経由）＋失敗時は X DM**（2026.11 ユーザー指示。LINE → X DM → スプレッドシート(Apps Script) を経て、Apps Script のエラーが多いためこれに決定。gas/ は削除済み）。
-  - index.html の `var MAIL_TO` = ziyola2022@gmail.com（2026.11 設定、ユーザー指定）。**FormSubmit の有効化はまだ（公開サイトからの初回送信で確認メールが届く）**。送信先は `https://formsubmit.co/ajax/<MAIL_TO>`（JSON、Accept: application/json）。
-  - FormSubmit は最初の1通で「Activate Form」の確認メールを送るだけで、本文は届かない。確認後は届く。確認後に発行されるランダム文字列を MAIL_TO に入れるとアドレスをページに出さずに済む。
-  - メールは件名「【ZIYOLA 取り置き】2026.11.20 会場 / 名前 2枚」、本文は表形式（取り置き名 / 公演日 / 会場 / 枚数）。
-  - **claude.ai 版は外部への通信が止められるので送れない。メール送信が動くのは Vercel 等で公開したサイトのみ。**
-- 送れなかったとき（MAIL_TO 未設定、claude.ai 版、通信エラー、未有効化）は X DM 用の文面＋Copy＋公式Xボタン。
+- 届け先は **バンドの Gmail。Vercel Function `api/reserve.js` が nodemailer（10.1.1 固定）で Gmail から送る**（2026.11。LINE → X DM → Apps Script → FormSubmit（サービス終了）を経てこれに決定。外部のフォーム中継サービスには頼らない）。
+  - Vercel 環境変数: `GMAIL_USER`=ziyola2022@gmail.com / `GMAIL_APP_PASSWORD`=Google のアプリパスワード（16文字、2段階認証が必要）/ 任意で `MAIL_TO`（省略時は GMAIL_USER 宛て）。**未設定の間は 503 not_configured で X DM にフォールバック**。
+  - フォームは `POST /api/reserve`（JSON）。200 `{ok:true}` / 400 `{ok:false,error:"日本語"}` はそのまま表示 / それ以外（503・502・通信失敗）は X DM へ。
+  - メールは件名「【ZIYOLA 取り置き】2026.11.20 会場 / 名前 2枚」、本文はテキスト＋表（取り置き名 / 公演日 / 会場 / 枚数 / 受付 JST）。差出人名「ZIYOLA 取り置きフォーム」。
+  - Gmail の送信上限は1日500通程度。
+  - **claude.ai 版には /api が無いので常に X DM になる。メール送信が動くのは Vercel 版のみ。**
+- 送れなかったとき（環境変数未設定、claude.ai 版、通信エラー、Gmail 認証エラー）は X DM 用の文面＋Copy＋公式Xボタン。
   - `var X_DM_ID` に @ZIYOLA_official の数字のユーザーIDを入れると、宛先・文面入りの DM 画面を開くボタンになる（現在は空）。
 - 公演が決まって LIVE にカードが増えたら、公演日と会場をセレクトにする余地あり。
 
 ## Vercel 公開（2026.11 公開済み）
 - 本番URL: https://ziyola-site.vercel.app （Vercel プロジェクト ziyola-site / prj_ZMVdcZQUX5s0Uvk4f7VMlAnWQmiN、個人アカウント）
 - GitHub: dyson1021/ziyola-site（Private）の main に push すると自動で本番デプロイされる。
-- `vercel.json`: build = `node scripts/build.mjs`（index.html に doctype/head を付けて dist/ を作る）、output = dist、install なし。
+- `vercel.json`: build = `node scripts/build.mjs`（index.html に doctype/head を付けて dist/ を作る）、output = dist、install = `npm install`（nodemailer 用）。`api/` は Vercel Functions。
 - Vercel Authentication は標準設定（プレビューURLは要ログイン、本番ドメインは公開）。
 - claude.ai のアーティファクトも並行して更新している（中身は同じ index.html）。取り置きのメール送信が動くのは Vercel 版だけ。
