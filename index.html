@@ -488,10 +488,13 @@ footer small{color:var(--fg-dim);font-family:var(--util);letter-spacing:.1em;fon
       try{navigator.clipboard.writeText(t).then(done,sel)}catch(e){sel()}
     });
   });
-  /* ---------- ticket hold form → Google Sheets (Apps Script web app, see gas/Code.gs) ---------- */
-  // SHEET_URL: the Apps Script web app URL (…/exec). Empty, or when sending fails, the visitor gets an X DM text instead.
+  /* ---------- ticket hold form → band's Gmail via FormSubmit (formsubmit.co, no account needed) ---------- */
+  // MAIL_TO: the band's address, or the random alias FormSubmit issues after activation (hides the address).
+  // The first send to a new address only triggers FormSubmit's activation email; nothing is delivered until it is confirmed.
+  // Empty, or when sending fails (claude.ai blocks outside requests), the visitor gets an X DM text instead.
   // X_DM_ID: numeric user ID of @ZIYOLA_official; when set, that fallback opens a DM with the text filled in.
-  var SHEET_URL='';
+  var MAIL_TO='';
+  var MAIL_ENDPOINT='https://formsubmit.co/ajax/';
   var X_DM_ID='';
   (function(){
     var form=document.getElementById('rform');if(!form)return;
@@ -512,14 +515,19 @@ footer small{color:var(--fg-dim);font-family:var(--util);letter-spacing:.1em;fon
       var data={name:v('r-name'),date:v('r-date'),venue:v('r-venue'),count:+v('r-count'),website:v('r-website')};
       var summary=fmt(data.date)+' '+data.venue+' / '+data.count+'枚';
       var text='【取り置き】\n取り置き名：'+data.name+'\n公演日：'+fmt(data.date)+'\n会場：'+data.venue+'\n枚数：'+data.count+'枚';
-      if(!SHEET_URL)return fallback(text);
+      // a filled honeypot means a bot: pretend it worked and send nothing
+      if(data.website){show('ok',['取り置きを受け付けました。']);form.reset();return}
+      if(!MAIL_TO)return fallback(text);
       btn.disabled=true;btn.textContent='送信中…';
-      // text/plain keeps this a simple request (no CORS preflight), which Apps Script requires
-      fetch(SHEET_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(data)})
+      var mail={
+        '取り置き名':data.name,'公演日':fmt(data.date),'会場':data.venue,'枚数':data.count+'枚',
+        _subject:'【ZIYOLA 取り置き】'+data.date.replace(/-/g,'.')+' '+data.venue+' / '+data.name+' '+data.count+'枚',
+        _template:'table',_captcha:'false'
+      };
+      fetch(MAIL_ENDPOINT+encodeURIComponent(MAIL_TO),{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(mail)})
         .then(function(r){return r.json()})
         .then(function(j){
-          if(j&&j.ok){show('ok',['取り置きを受け付けました。','当日は受付で「'+data.name+'」とお伝えください。（'+summary+'）']);form.reset()}
-          else if(j&&j.error&&j.error!=='busy'&&j.error!=='server')show('err',[j.error]);
+          if(j&&String(j.success)==='true'){show('ok',['取り置きを受け付けました。','当日は受付で「'+data.name+'」とお伝えください。（'+summary+'）']);form.reset()}
           else fallback(text);
         },function(){fallback(text)})
         .then(function(){btn.disabled=false;btn.textContent='取り置きを申し込む'});
