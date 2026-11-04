@@ -65,6 +65,9 @@
   - `var X_DM_ID` に @ZIYOLA_official の数字のユーザーIDを入れると、宛先・文面入りの DM 画面を開くボタンになる（現在は空）。
 - 公演が決まって LIVE にカードが増えたら、公演日と会場をセレクトにする余地あり。
 
-## Vercel 公開（未完了）
-- `vercel.json`: build = `node scripts/build.mjs`（index.html に doctype/head を付けて dist/ を作る）、output = dist。
-- GitHub リポジトリ dyson1021/ziyola-site を作ってもらう必要あり（このセッションからは作れない）。作成後に add_repo → push → Vercel プロジェクト作成。
+## Vercel 公開（2026.11 公開済み）
+- 本番URL: https://ziyola-site.vercel.app （Vercel プロジェクト ziyola-site / prj_ZMVdcZQUX5s0Uvk4f7VMlAnWQmiN、個人アカウント）
+- GitHub: dyson1021/ziyola-site（Private）の main に push すると自動で本番デプロイされる。
+- `vercel.json`: build = `node scripts/build.mjs`（index.html に doctype/head を付けて dist/ を作る）、output = dist、install なし。
+- Vercel Authentication は標準設定（プレビューURLは要ログイン、本番ドメインは公開）。
+- claude.ai のアーティファクトも並行して更新している（中身は同じ index.html）。取り置きのメール送信が動くのは Vercel 版だけ。
