@@ -47,7 +47,7 @@
 
 ## 未着手・素材待ち
 - ジャケット画像の高解像度版: NO FATE / 月海（現在225px。共鳴も447pxなので可能なら900px級）
-- メンバー個別写真（`.mem .photo` は現状グラデ＋パート略号のプレースホルダー、3:4）
+- メンバー個別写真（`.mem .photo` は現状「NEW VISUAL / Coming soon」表示のプレースホルダー、3:4。2026.11 ユーザー指示。写真が来たら img に差し替え）
 - MAHO の X / Instagram
 - LIVE 日程（現在「決定次第発表」のTBAカード1枚）
 - CONTACT の公式メール（現在は @ZIYOLA_official DM 案内）

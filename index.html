@@ -168,9 +168,10 @@ h1,h2,h3{margin:0;text-wrap:balance;line-height:1}
 /* members */
 .members{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px}
 .mem{background:var(--bg-3);border:1px solid var(--line);min-width:0;display:grid;grid-template-rows:auto 1fr;align-content:start}
-.mem .photo{aspect-ratio:3/4;max-width:100%;background:linear-gradient(180deg,#171b2a,#0a0c13);position:relative;display:grid;place-items:end start;padding:16px}
+.mem .photo{aspect-ratio:3/4;max-width:100%;background:linear-gradient(180deg,#171b2a,#0a0c13);position:relative;display:grid;align-content:end;justify-items:start;gap:10px;padding:18px}
 .mem .photo::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 25% 25%,rgba(var(--red-rgb),.22),transparent 55%),radial-gradient(circle at 80% 70%,rgba(var(--blue-rgb),.22),transparent 55%)}
-.mem .photo span{font-family:var(--display);font-size:72px;color:rgba(232,236,245,.08);line-height:1;position:relative}
+.mem .photo span{font-family:var(--display);font-size:clamp(44px,5.2vw,64px);text-transform:uppercase;letter-spacing:.03em;color:rgba(232,236,245,.2);line-height:.9;position:relative}
+.mem .photo small{font-family:var(--util);font-weight:600;font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--steel);position:relative}
 .mem .body{padding:16px 18px 20px;display:grid;gap:6px;align-content:start}
 .mem .part{font-family:var(--util);letter-spacing:.28em;text-transform:uppercase;font-size:12px;color:var(--accent-ink)}
 .mem h3{font-size:20px;font-weight:900}
@@ -369,7 +370,7 @@ footer small{color:var(--fg-dim);font-family:var(--util);letter-spacing:.1em;fon
     <div class="sec-head"><h2>Member</h2><span class="jp">メンバー</span></div>
     <div class="members">
       <article class="mem">
-        <div class="photo"><span>VO</span></div>
+        <div class="photo"><span>New<br>visual</span><small>Coming soon</small></div>
         <div class="body">
           <div class="part">Vocal</div>
           <h3>MAHO</h3>
@@ -377,7 +378,7 @@ footer small{color:var(--fg-dim);font-family:var(--util);letter-spacing:.1em;fon
         </div>
       </article>
       <article class="mem">
-        <div class="photo"><span>GT</span></div>
+        <div class="photo"><span>New<br>visual</span><small>Coming soon</small></div>
         <div class="body">
           <div class="part">Guitar</div>
           <h3>将</h3>
@@ -386,7 +387,7 @@ footer small{color:var(--fg-dim);font-family:var(--util);letter-spacing:.1em;fon
         </div>
       </article>
       <article class="mem">
-        <div class="photo"><span>BA</span></div>
+        <div class="photo"><span>New<br>visual</span><small>Coming soon</small></div>
         <div class="body">
           <div class="part">Bass</div>
           <h3>Bucchi</h3>
