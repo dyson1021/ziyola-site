@@ -137,9 +137,12 @@ h1,h2,h3{margin:0;text-wrap:balance;line-height:1}
 .rform input[aria-invalid="true"]{border-color:var(--warn)}
 /* date: the native field opens the calendar; its yyyy/mm/dd segments are hidden under a Japanese read-out */
 .datewrap{position:relative;display:block}
-.rform input[type="date"]{cursor:pointer;color:transparent;caret-color:transparent;min-height:48px}
+.rform input[type="date"]{position:relative;cursor:pointer;color:transparent;caret-color:transparent;min-height:48px}
 .rform input[type="date"]::-webkit-datetime-edit{opacity:0}
-.rform input[type="date"]::-webkit-calendar-picker-indicator{cursor:pointer;opacity:.8}
+/* the browser's own calendar button is stretched, invisible, over the whole field so any click opens the calendar
+   (no script needed, so it also works where showPicker() is blocked, e.g. inside an iframe) */
+.rform input[type="date"]::-webkit-calendar-picker-indicator{position:absolute;inset:0;width:auto;height:auto;margin:0;padding:0;opacity:0;cursor:pointer}
+.dateicon{position:absolute;right:14px;top:50%;width:18px;height:18px;transform:translateY(-50%);pointer-events:none;color:var(--fg-dim)}
 .dateshow{position:absolute;left:15px;right:44px;top:50%;transform:translateY(-50%);pointer-events:none;font:16px/1.4 var(--body);color:var(--fg);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .dateshow.empty{color:var(--fg-dim)}
 .pair{display:grid;grid-template-columns:minmax(0,250px) minmax(0,1fr);gap:10px}
@@ -318,7 +321,7 @@ footer small{color:var(--fg-dim);font-family:var(--util);letter-spacing:.1em;fon
         <fieldset class="field">
           <legend>公演日と会場名<span class="req">必須</span></legend>
           <div class="pair">
-            <label for="r-date">公演日<span class="datewrap"><input id="r-date" name="date" type="date" required><span class="dateshow empty" id="r-dateshow" aria-hidden="true">日付を選択</span></span></label>
+            <label for="r-date">公演日<span class="datewrap"><input id="r-date" name="date" type="date" required><span class="dateshow empty" id="r-dateshow" aria-hidden="true">日付を選択</span><svg class="dateicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></span></label>
             <label for="r-venue">会場名<input id="r-venue" name="venue" type="text" maxlength="60" placeholder="例：心斎橋 ○○" required></label>
           </div>
         </fieldset>
@@ -509,8 +512,8 @@ footer small{color:var(--fg-dim);font-family:var(--util);letter-spacing:.1em;fon
     var form=document.getElementById('rform');if(!form)return;
     var st=document.getElementById('rstatus'),btn=document.getElementById('r-submit'),dateEl=document.getElementById('r-date');
     var d=new Date();dateEl.min=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
-    // pick the date from the calendar on every device: a click anywhere in the field opens it (desktop browsers
-    // otherwise expect typing into yyyy/mm/dd segments), and typing is blocked; Enter/Space/↓ open it from the keyboard
+    // pick the date from the calendar on every device: a click anywhere opens it through the browser's own calendar
+    // button, stretched over the field in CSS; typing is blocked and Enter/Space/↓ open it from the keyboard
     function openPicker(){try{if(dateEl.showPicker)dateEl.showPicker()}catch(err){}}
     var dateShow=document.getElementById('r-dateshow');
     function showDate(){
@@ -520,7 +523,6 @@ footer small{color:var(--fg-dim);font-family:var(--util);letter-spacing:.1em;fon
     }
     dateEl.addEventListener('input',showDate);dateEl.addEventListener('change',showDate);
     form.addEventListener('reset',function(){setTimeout(showDate,0)});
-    dateEl.addEventListener('click',openPicker);
     dateEl.addEventListener('keydown',function(e){
       e.preventDefault();
       // Tab would walk the hidden yyyy/mm/dd segments; jump to the neighbouring fields instead
