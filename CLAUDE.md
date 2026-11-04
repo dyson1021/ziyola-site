@@ -58,8 +58,8 @@
 - 項目: 取り置き名 / 公演日（date）+ 会場名 / 枚数（1〜6）。過去日は選べない。隠し項目 `website` はスパム避け（入っていたら送らずに成功表示）。
 - 届け先は **Google フォーム**（2026.11 ユーザー指示。LINE → X DM → Apps Script → FormSubmit（終了）→ Gmail 関数 → Formspree 案を経てこれに決定。Apps Script / 自前 API / 外部フォーム中継は使わない。api/・package.json は削除済み）。
   - 仕組み: サイトのフォーム → `fetch(GFORM_ACTION,{method:'POST',mode:'no-cors'})` で Google フォームの formResponse に `entry.NNN=値` を送る → 回答は Google フォームの「回答」タブ（スプレッドシートにも書き出せる）。
-  - index.html の `var GFORM_ACTION`（`https://docs.google.com/forms/d/e/<ID>/formResponse`）と `var GFORM_FIELDS`（name / date / venue / count の entry ID）を設定する。**現在は空（Google フォームの作成待ち）**。
-  - Google フォームの質問はすべて「記述式」4問（取り置き名 / 公演日 / 会場名 / 枚数）。公演日は「2026.11.20（金）」、枚数は「2枚」の文字列で送る。ログイン必須・回答1回制限・メール収集はオフにすること（オンだと匿名で送れない）。
+  - Google フォーム「ZIYOLA取り置きフォーム」（2026.11 ユーザー作成）: `GFORM_ACTION` = https://docs.google.com/forms/d/e/1FAIpQLSe75x2IM6TZVSsGqm7Dhg8IHPF1Nmjk-vEAujaGVCJjXEMN4A/formResponse 、`GFORM_FIELDS` = 取り置き名 entry.1337964562 / 公演日 entry.1103086995 / 会場名 entry.1224712791 / 枚数 entry.798879697。entry ID は viewform ページの FB_PUBLIC_LOAD_DATA_ から読める。
+  - 質問は 取り置き名・会場名・枚数が「記述式」、**公演日は「日付」質問**なので `entry.1103086995_year/_month/_day` に分けて送る（文字列だと受け付けられない）。枚数は「2枚」の文字列。質問の種類を変えたらサイト側も合わせること。ログイン必須・回答1回制限・メール収集はオフにすること（オンだと匿名で送れない）。
   - **Google は CORS ヘッダーを返さないので、送信結果はページから読めない。** 通信が終わったら成功表示、通信エラーのときだけ失敗表示。設定ミスは画面に出ないので、設定後に必ずテスト送信して「回答」タブで確認する。
   - **claude.ai 版は外部への通信が止められるので常に失敗表示（X DM の文面）。送れるのは Vercel 版のみ。**
   - Vercel に残っている環境変数 GMAIL_USER は旧方式の名残で未使用。

@@ -489,13 +489,14 @@ footer small{color:var(--fg-dim);font-family:var(--util);letter-spacing:.1em;fon
     });
   });
   /* ---------- ticket hold form → Google Form (answers are listed in the form's 回答 tab) ---------- */
-  // GFORM_ACTION: 'https://docs.google.com/forms/d/e/<form id>/formResponse'; GFORM_FIELDS: the entry.NNN ids of its
-  // four short-answer questions, taken from the form's prefilled link. Google answers without CORS headers, so the
-  // page cannot read the result: a completed request counts as sent, a network error (or claude.ai's block) does not.
+  // GFORM_ACTION: the form's formResponse URL; GFORM_FIELDS: the entry.NNN ids of its four questions
+  // (取り置き名 / 公演日 / 会場名 / 枚数). 公演日 is a Google "date" question, so it is sent as _year/_month/_day.
+  // Google answers without CORS headers, so the page cannot read the result: a completed request counts as sent,
+  // a network error (or claude.ai's block) does not.
   // When either is unset or sending fails, the visitor gets an error plus an X DM text.
   // X_DM_ID: numeric user ID of @ZIYOLA_official; when set, that fallback opens a DM with the text filled in.
-  var GFORM_ACTION='';
-  var GFORM_FIELDS={name:'',date:'',venue:'',count:''};
+  var GFORM_ACTION='https://docs.google.com/forms/d/e/1FAIpQLSe75x2IM6TZVSsGqm7Dhg8IHPF1Nmjk-vEAujaGVCJjXEMN4A/formResponse';
+  var GFORM_FIELDS={name:'entry.1337964562',date:'entry.1103086995',venue:'entry.1224712791',count:'entry.798879697'};
   var X_DM_ID='';
   (function(){
     var form=document.getElementById('rform');if(!form)return;
@@ -522,7 +523,9 @@ footer small{color:var(--fg-dim);font-family:var(--util);letter-spacing:.1em;fon
       if(!GFORM_ACTION||!F.name||!F.date||!F.venue||!F.count)return fallback(text);
       btn.disabled=true;btn.textContent='送信中…';
       var entry=new URLSearchParams();
-      entry.append(F.name,data.name);entry.append(F.date,fmt(data.date));entry.append(F.venue,data.venue);entry.append(F.count,data.count+'枚');
+      var ymd=data.date.split('-');
+      entry.append(F.name,data.name);entry.append(F.venue,data.venue);entry.append(F.count,data.count+'枚');
+      entry.append(F.date+'_year',ymd[0]);entry.append(F.date+'_month',String(+ymd[1]));entry.append(F.date+'_day',String(+ymd[2]));
       fetch(GFORM_ACTION,{method:'POST',mode:'no-cors',body:entry})
         .then(function(){show('ok',['取り置き予約を受け付けました。','当日は受付で「'+data.name+'」とお伝えください。（'+summary+'）']);form.reset()},
               function(){fallback(text)})
