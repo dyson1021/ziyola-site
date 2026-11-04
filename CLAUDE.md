@@ -56,19 +56,20 @@
 
 ## 取り置きフォーム（LIVE 欄 `#reserve`）
 - 項目: 取り置き名 / 公演日（date）+ 会場名 / 枚数（1〜6）。過去日は選べない。隠し項目 `website` はスパム避け（入っていたら送らずに成功表示）。
-- 届け先は **バンドの Gmail。Vercel Function `api/reserve.js` が nodemailer（10.1.1 固定）で Gmail から送る**（2026.11。LINE → X DM → Apps Script → FormSubmit（サービス終了）を経てこれに決定。外部のフォーム中継サービスには頼らない）。
-  - Vercel 環境変数: `GMAIL_USER`=ziyola2022@gmail.com / `GMAIL_APP_PASSWORD`=Google のアプリパスワード（16文字、2段階認証が必要）/ 任意で `MAIL_TO`（省略時は GMAIL_USER 宛て）。**未設定の間は 503 not_configured で X DM にフォールバック**。
-  - フォームは `POST /api/reserve`（JSON）。200 `{ok:true}` / 400 `{ok:false,error:"日本語"}` はそのまま表示 / それ以外（503・502・通信失敗）は X DM へ。
-  - メールは件名「【ZIYOLA 取り置き】2026.11.20 会場 / 名前 2枚」、本文はテキスト＋表（取り置き名 / 公演日 / 会場 / 枚数 / 受付 JST）。差出人名「ZIYOLA 取り置きフォーム」。
-  - Gmail の送信上限は1日500通程度。
-  - **claude.ai 版には /api が無いので常に X DM になる。メール送信が動くのは Vercel 版のみ。**
-- 送れなかったとき（環境変数未設定、claude.ai 版、通信エラー、Gmail 認証エラー）は X DM 用の文面＋Copy＋公式Xボタン。
+- 届け先は **Google フォーム**（2026.11 ユーザー指示。LINE → X DM → Apps Script → FormSubmit（終了）→ Gmail 関数 → Formspree 案を経てこれに決定。Apps Script / 自前 API / 外部フォーム中継は使わない。api/・package.json は削除済み）。
+  - 仕組み: サイトのフォーム → `fetch(GFORM_ACTION,{method:'POST',mode:'no-cors'})` で Google フォームの formResponse に `entry.NNN=値` を送る → 回答は Google フォームの「回答」タブ（スプレッドシートにも書き出せる）。
+  - index.html の `var GFORM_ACTION`（`https://docs.google.com/forms/d/e/<ID>/formResponse`）と `var GFORM_FIELDS`（name / date / venue / count の entry ID）を設定する。**現在は空（Google フォームの作成待ち）**。
+  - Google フォームの質問はすべて「記述式」4問（取り置き名 / 公演日 / 会場名 / 枚数）。公演日は「2026.11.20（金）」、枚数は「2枚」の文字列で送る。ログイン必須・回答1回制限・メール収集はオフにすること（オンだと匿名で送れない）。
+  - **Google は CORS ヘッダーを返さないので、送信結果はページから読めない。** 通信が終わったら成功表示、通信エラーのときだけ失敗表示。設定ミスは画面に出ないので、設定後に必ずテスト送信して「回答」タブで確認する。
+  - **claude.ai 版は外部への通信が止められるので常に失敗表示（X DM の文面）。送れるのは Vercel 版のみ。**
+  - Vercel に残っている環境変数 GMAIL_USER は旧方式の名残で未使用。
+- 送れなかったとき（GFORM 未設定、claude.ai 版、通信エラー）は「送信に失敗しました…」＋X DM 用の文面＋Copy＋公式Xボタン。
   - `var X_DM_ID` に @ZIYOLA_official の数字のユーザーIDを入れると、宛先・文面入りの DM 画面を開くボタンになる（現在は空）。
 - 公演が決まって LIVE にカードが増えたら、公演日と会場をセレクトにする余地あり。
 
 ## Vercel 公開（2026.11 公開済み）
 - 本番URL: https://ziyola-site.vercel.app （Vercel プロジェクト ziyola-site / prj_ZMVdcZQUX5s0Uvk4f7VMlAnWQmiN、個人アカウント）
 - GitHub: dyson1021/ziyola-site（Private）の main に push すると自動で本番デプロイされる。
-- `vercel.json`: build = `node scripts/build.mjs`（index.html に doctype/head を付けて dist/ を作る）、output = dist、install = `npm install`（nodemailer 用）。`api/` は Vercel Functions。
+- `vercel.json`: build = `node scripts/build.mjs`（index.html に doctype/head を付けて dist/ を作る）、output = dist。依存パッケージ・サーバー処理なし（静的サイトのみ）。
 - Vercel Authentication は標準設定（プレビューURLは要ログイン、本番ドメインは公開）。
 - claude.ai のアーティファクトも並行して更新している（中身は同じ index.html）。取り置きのメール送信が動くのは Vercel 版だけ。

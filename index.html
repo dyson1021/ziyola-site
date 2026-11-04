@@ -488,9 +488,14 @@ footer small{color:var(--fg-dim);font-family:var(--util);letter-spacing:.1em;fon
       try{navigator.clipboard.writeText(t).then(done,sel)}catch(e){sel()}
     });
   });
-  /* ---------- ticket hold form → /api/reserve (Vercel function that mails the band through Gmail) ---------- */
-  // When sending fails (no function on claude.ai, not configured, network or mail error) the visitor gets an X DM text instead.
+  /* ---------- ticket hold form → Google Form (answers are listed in the form's 回答 tab) ---------- */
+  // GFORM_ACTION: 'https://docs.google.com/forms/d/e/<form id>/formResponse'; GFORM_FIELDS: the entry.NNN ids of its
+  // four short-answer questions, taken from the form's prefilled link. Google answers without CORS headers, so the
+  // page cannot read the result: a completed request counts as sent, a network error (or claude.ai's block) does not.
+  // When either is unset or sending fails, the visitor gets an error plus an X DM text.
   // X_DM_ID: numeric user ID of @ZIYOLA_official; when set, that fallback opens a DM with the text filled in.
+  var GFORM_ACTION='';
+  var GFORM_FIELDS={name:'',date:'',venue:'',count:''};
   var X_DM_ID='';
   (function(){
     var form=document.getElementById('rform');if(!form)return;
@@ -512,15 +517,15 @@ footer small{color:var(--fg-dim);font-family:var(--util);letter-spacing:.1em;fon
       var summary=fmt(data.date)+' '+data.venue+' / '+data.count+'枚';
       var text='【取り置き】\n取り置き名：'+data.name+'\n公演日：'+fmt(data.date)+'\n会場：'+data.venue+'\n枚数：'+data.count+'枚';
       // a filled honeypot means a bot: pretend it worked and send nothing
-      if(data.website){show('ok',['取り置きを受け付けました。']);form.reset();return}
+      if(data.website){show('ok',['取り置き予約を受け付けました。']);form.reset();return}
+      var F=GFORM_FIELDS;
+      if(!GFORM_ACTION||!F.name||!F.date||!F.venue||!F.count)return fallback(text);
       btn.disabled=true;btn.textContent='送信中…';
-      fetch('/api/reserve',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)})
-        .then(function(r){return r.json().catch(function(){return {}}).then(function(j){return {status:r.status,j:j}})})
-        .then(function(r){
-          if(r.status===200&&r.j.ok){show('ok',['取り置きを受け付けました。','当日は受付で「'+data.name+'」とお伝えください。（'+summary+'）']);form.reset()}
-          else if(r.status===400&&r.j.error)show('err',[r.j.error]);
-          else fallback(text);
-        },function(){fallback(text)})
+      var entry=new URLSearchParams();
+      entry.append(F.name,data.name);entry.append(F.date,fmt(data.date));entry.append(F.venue,data.venue);entry.append(F.count,data.count+'枚');
+      fetch(GFORM_ACTION,{method:'POST',mode:'no-cors',body:entry})
+        .then(function(){show('ok',['取り置き予約を受け付けました。','当日は受付で「'+data.name+'」とお伝えください。（'+summary+'）']);form.reset()},
+              function(){fallback(text)})
         .then(function(){btn.disabled=false;btn.textContent='取り置きを申し込む'});
     });
     function fallback(text){
@@ -532,7 +537,7 @@ footer small{color:var(--fg-dim);font-family:var(--util);letter-spacing:.1em;fon
         try{navigator.clipboard.writeText(text).then(function(){cp.textContent='Copied';setTimeout(function(){cp.textContent='Copy'},1500)},sel)}catch(err){sel()}
       });
       row.appendChild(x);row.appendChild(cp);
-      show('err',[X_DM_ID?'送信できませんでした。お手数ですが、下のボタンでXのDMを開いて送信してください。':'送信できませんでした。お手数ですが、文面をコピーして公式XのDMで送ってください。',pre,row]);
+      show('err',['送信に失敗しました。時間をおいてもう一度お試しください。',X_DM_ID?'お急ぎの場合は、下のボタンでXのDMを開いて送信してください。':'お急ぎの場合は、文面をコピーして公式XのDMで送ってください。',pre,row]);
       x.focus();
     }
   })();
