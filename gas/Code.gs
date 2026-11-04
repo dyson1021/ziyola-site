@@ -1,10 +1,14 @@
 /**
  * ZIYOLA 取り置き受付 — Google スプレッドシートに1行ずつ記録する Web アプリ
  *
- * 使い方（スプレッドシートの「拡張機能 → Apps Script」に、このファイルの中身を全部貼り付ける）
- *  1. 保存して「デプロイ → 新しいデプロイ → 種類: ウェブアプリ」
- *     次のユーザーとして実行: 自分 / アクセスできるユーザー: 全員
- *  2. 表示された「ウェブアプリの URL」（…/exec）をサイトの SHEET_URL に入れる
+ * 使い方（パソコンのブラウザで。複数の Google アカウントにログインしているならシークレットウィンドウで）
+ *  1. https://script.google.com/ →「新しいプロジェクト」→ 最初のコードを消して、このファイルの中身を全部貼り付けて保存
+ *     （スプレッドシートの「拡張機能 → Apps Script」に貼っても同じように動く）
+ *  2. 上の関数の選択欄で setup を選んで「実行」→ アクセスを許可
+ *     → 記録用スプレッドシート「ZIYOLA 取り置き」が自動で作られ、実行ログにその URL が出る
+ *  3. 右上「デプロイ → 新しいデプロイ」→ 歯車 →「ウェブアプリ」
+ *     次のユーザーとして実行: 自分 / アクセスできるユーザー: 全員 →「デプロイ」
+ *  4. 表示された「ウェブアプリの URL」（…/exec）をサイトの SHEET_URL に入れる
  *  コードを直したときは「デプロイを管理 → 編集 → バージョン: 新バージョン」で更新（URL は変わらない）
  */
 
@@ -47,9 +51,16 @@ function doPost(e) {
   }
 }
 
-// ブラウザで URL を開いたときの動作確認用
+// ブラウザで URL を開いたときの動作確認用（記録先シートの URL も返す）
 function doGet() {
-  return reply_({ ok: true, service: 'ZIYOLA reserve' });
+  return reply_({ ok: true, service: 'ZIYOLA reserve', sheet: sheet_().getParent().getUrl() });
+}
+
+// エディタから一度実行して、権限の許可と記録用シートの作成を済ませる
+function setup() {
+  var url = sheet_().getParent().getUrl();
+  console.log('記録先のスプレッドシート: ' + url);
+  return url;
 }
 
 function validate_(b) {
@@ -73,8 +84,21 @@ function safe_(s) {
   return /^[=+\-@]/.test(s) ? "'" + s : s;
 }
 
+// スプレッドシートに付いたスクリプトならそのシート、単体のスクリプトなら初回に作ったシートを使う
+function book_() {
+  var ss = null;
+  try { ss = SpreadsheetApp.getActiveSpreadsheet(); } catch (e) {}
+  if (ss) return ss;
+  var props = PropertiesService.getScriptProperties();
+  var id = props.getProperty('SHEET_ID');
+  if (id) return SpreadsheetApp.openById(id);
+  ss = SpreadsheetApp.create('ZIYOLA 取り置き');
+  props.setProperty('SHEET_ID', ss.getId());
+  return ss;
+}
+
 function sheet_() {
-  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var ss = book_();
   var sh = ss.getSheetByName(SHEET_NAME);
   if (!sh) {
     sh = ss.insertSheet(SHEET_NAME);
