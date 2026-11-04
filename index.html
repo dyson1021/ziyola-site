@@ -135,7 +135,14 @@ h1,h2,h3{margin:0;text-wrap:balance;line-height:1}
 .rform input:focus,.rform select:focus{border-color:var(--blue);outline:none}
 .rform input:focus-visible,.rform select:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
 .rform input[aria-invalid="true"]{border-color:var(--warn)}
-.pair{display:grid;grid-template-columns:minmax(0,190px) minmax(0,1fr);gap:10px}
+/* date: the native field opens the calendar; its yyyy/mm/dd segments are hidden under a Japanese read-out */
+.datewrap{position:relative;display:block}
+.rform input[type="date"]{cursor:pointer;color:transparent;caret-color:transparent;min-height:48px}
+.rform input[type="date"]::-webkit-datetime-edit{opacity:0}
+.rform input[type="date"]::-webkit-calendar-picker-indicator{cursor:pointer;opacity:.8}
+.dateshow{position:absolute;left:15px;right:44px;top:50%;transform:translateY(-50%);pointer-events:none;font:16px/1.4 var(--body);color:var(--fg);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dateshow.empty{color:var(--fg-dim)}
+.pair{display:grid;grid-template-columns:minmax(0,250px) minmax(0,1fr);gap:10px}
 .pair label{font-size:12px;color:var(--fg-dim);display:grid;gap:4px}
 @media(max-width:520px){.pair{grid-template-columns:minmax(0,1fr)}}
 .count{max-width:160px}
@@ -311,7 +318,7 @@ footer small{color:var(--fg-dim);font-family:var(--util);letter-spacing:.1em;fon
         <fieldset class="field">
           <legend>公演日と会場名<span class="req">必須</span></legend>
           <div class="pair">
-            <label for="r-date">公演日<input id="r-date" name="date" type="date" required></label>
+            <label for="r-date">公演日<span class="datewrap"><input id="r-date" name="date" type="date" required><span class="dateshow empty" id="r-dateshow" aria-hidden="true">日付を選択</span></span></label>
             <label for="r-venue">会場名<input id="r-venue" name="venue" type="text" maxlength="60" placeholder="例：心斎橋 ○○" required></label>
           </div>
         </fieldset>
@@ -502,6 +509,24 @@ footer small{color:var(--fg-dim);font-family:var(--util);letter-spacing:.1em;fon
     var form=document.getElementById('rform');if(!form)return;
     var st=document.getElementById('rstatus'),btn=document.getElementById('r-submit'),dateEl=document.getElementById('r-date');
     var d=new Date();dateEl.min=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+    // pick the date from the calendar on every device: a click anywhere in the field opens it (desktop browsers
+    // otherwise expect typing into yyyy/mm/dd segments), and typing is blocked; Enter/Space/↓ open it from the keyboard
+    function openPicker(){try{if(dateEl.showPicker)dateEl.showPicker()}catch(err){}}
+    var dateShow=document.getElementById('r-dateshow');
+    function showDate(){
+      var v=dateEl.value;dateShow.classList.toggle('empty',!v);
+      if(!v){dateShow.textContent='日付を選択';return}
+      var p=v.split('-');dateShow.textContent=p[0]+'年'+(+p[1])+'月'+(+p[2])+'日（'+WD[new Date(+p[0],p[1]-1,+p[2]).getDay()]+'）';
+    }
+    dateEl.addEventListener('input',showDate);dateEl.addEventListener('change',showDate);
+    form.addEventListener('reset',function(){setTimeout(showDate,0)});
+    dateEl.addEventListener('click',openPicker);
+    dateEl.addEventListener('keydown',function(e){
+      e.preventDefault();
+      // Tab would walk the hidden yyyy/mm/dd segments; jump to the neighbouring fields instead
+      if(e.key==='Tab'){document.getElementById(e.shiftKey?'r-name':'r-venue').focus();return}
+      if(e.key==='Enter'||e.key===' '||e.key==='ArrowDown')openPicker();
+    });
     var WD=['日','月','火','水','木','金','土'];
     function fmt(v){var p=v.split('-');var w=new Date(+p[0],p[1]-1,+p[2]).getDay();return p.join('.')+'（'+WD[w]+'）'}
     function el(tag,cls,text){var e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e}

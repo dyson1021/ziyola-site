@@ -55,7 +55,8 @@
 - GOODS のオンラインストアURL
 
 ## 取り置きフォーム（LIVE 欄 `#reserve`）
-- 項目: 取り置き名 / 公演日（date）+ 会場名 / 枚数（1〜6）。過去日は選べない。隠し項目 `website` はスパム避け（入っていたら送らずに成功表示）。
+- 項目: 取り置き名 / 公演日（date）+ 会場名 / 枚数（1〜6）。過去日は選べない。
+- 公演日はカレンダーから選ぶだけ（2026.11 ユーザー指示。PC で年/月/日を打ち込む挙動が分かりにくかったため）。欄のクリック・Enter/Space/↓ で `showPicker()`、文字入力は無効、Tab/Shift+Tab は会場名/取り置き名へ移動。ネイティブの yyyy/mm/dd 表示は隠し、上に重ねた `#r-dateshow` に「2026年11月20日（金）」/未選択は「日付を選択」を表示（PC・スマホ共通）。隠し項目 `website` はスパム避け（入っていたら送らずに成功表示）。
 - 届け先は **Google フォーム**（2026.11 ユーザー指示。LINE → X DM → Apps Script → FormSubmit（終了）→ Gmail 関数 → Formspree 案を経てこれに決定。Apps Script / 自前 API / 外部フォーム中継は使わない。api/・package.json は削除済み）。
   - 仕組み: サイトのフォーム → `fetch(GFORM_ACTION,{method:'POST',mode:'no-cors'})` で Google フォームの formResponse に `entry.NNN=値` を送る → 回答は Google フォームの「回答」タブ（スプレッドシートにも書き出せる）。
   - Google フォーム「ZIYOLA取り置きフォーム」（2026.11 ユーザー作成）: `GFORM_ACTION` = https://docs.google.com/forms/d/e/1FAIpQLSe75x2IM6TZVSsGqm7Dhg8IHPF1Nmjk-vEAujaGVCJjXEMN4A/formResponse 、`GFORM_FIELDS` = 取り置き名 entry.1337964562 / 公演日 entry.1103086995 / 会場名 entry.1224712791 / 枚数 entry.798879697。entry ID は viewform ページの FB_PUBLIC_LOAD_DATA_ から読める。
