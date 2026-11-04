@@ -41,6 +41,7 @@
 - 公式X @ZIYOLA_official / Instagram ziyola__official
 
 ## ユーザー指示で決まっていること
+- CONTACT の連絡先は Gmail ziyola2022@gmail.com に統一（Booking / Ticket とも。2026.11）。「取材」「タイアップ」の文言は載せない（見出しも Booking のみ）
 - AVELDCAIN（前身バンド）への言及は載せない
 - MEMBER の紹介文は載せない（パート・名前・SNSのみ）
 - ヒーローのロゴは写真を隠さないサイズで中央
@@ -50,7 +51,6 @@
 - メンバー個別写真（`.mem .photo` は現状「NEW VISUAL / Coming soon」表示のプレースホルダー、3:4。2026.11 ユーザー指示。写真が来たら img に差し替え）
 - MAHO の X / Instagram
 - LIVE 日程（現在「決定次第発表」のTBAカード1枚）
-- CONTACT の公式メール（現在は @ZIYOLA_official DM 案内）
 - ナビ/フッターの「ZIYOLA」はテキストのまま（ロゴ画像化するか要確認）
 - GOODS のオンラインストアURL
 

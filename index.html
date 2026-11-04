@@ -219,6 +219,8 @@ h1,h2,h3{margin:0;text-wrap:balance;line-height:1}
 .contact h3{font-family:var(--util);letter-spacing:.24em;text-transform:uppercase;font-size:14px;color:var(--steel)}
 .contact p{margin:0;font-size:14px;color:var(--fg-dim)}
 .mail{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-family:var(--util);font-size:19px;letter-spacing:.06em;user-select:all}
+.mail a{text-decoration:none;border-bottom:1px solid rgba(var(--blue-rgb),.5)}
+.mail a:hover{color:var(--steel)}
 .copy{font:600 12px var(--util);letter-spacing:.18em;text-transform:uppercase;border:1px solid var(--line);background:transparent;color:var(--fg-dim);padding:5px 10px;cursor:pointer}
 .copy:hover{border-color:var(--blue);color:var(--steel)}
 @media(max-width:720px){.contact{grid-template-columns:1fr}}
@@ -456,14 +458,14 @@ footer small{color:var(--fg-dim);font-family:var(--util);letter-spacing:.1em;fon
     <div class="sec-head"><h2>Contact</h2><span class="jp">お問い合わせ</span></div>
     <div class="contact">
       <div class="box">
-        <h3>Booking / Press</h3>
-        <p>ライブ出演依頼、取材、タイアップ等のお問い合わせは公式XのDMまで。</p>
-        <div class="mail"><span id="mail1">@ZIYOLA_official</span><button class="copy" type="button" data-copy="mail1">Copy</button></div>
+        <h3>Booking</h3>
+        <p>ライブ出演依頼などのお問い合わせは、下記のメールアドレスまでお送りください。</p>
+        <div class="mail"><span id="mail1"><a href="mailto:ziyola2022@gmail.com">ziyola2022@gmail.com</a></span><button class="copy" type="button" data-copy="mail1">Copy</button></div>
       </div>
       <div class="box">
         <h3>Ticket</h3>
-        <p>ライブのチケット取り置きは <a href="#reserve">LIVE 欄の取り置きフォーム</a> から。各メンバーのX DMや公式XのDMでも受け付けます。</p>
-        <div class="mail"><span id="mail2">@ZIYOLA_official</span><button class="copy" type="button" data-copy="mail2">Copy</button></div>
+        <p>ライブのチケット取り置きは <a href="#reserve">LIVE 欄の取り置きフォーム</a> から。フォームが使えない場合は、取り置き名・公演日・会場名・枚数を下記のメールアドレスまでお送りください。</p>
+        <div class="mail"><span id="mail2"><a href="mailto:ziyola2022@gmail.com">ziyola2022@gmail.com</a></span><button class="copy" type="button" data-copy="mail2">Copy</button></div>
       </div>
     </div>
   </div>
